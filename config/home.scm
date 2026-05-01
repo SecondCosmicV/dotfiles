@@ -1,4 +1,4 @@
-(use-modules                            ;
+(use-modules
   (gnu)
   (gnu home)
   (gnu home services dotfiles)

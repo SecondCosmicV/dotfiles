@@ -101,39 +101,42 @@
     (setq-local c-electric-flag nil)))
 (dolist
   (hook '(
-    lisp-interaction-mode-hook
-    emacs-lisp-mode-hook
-    sh-mode-hook
-    c-mode-hook
     c++-mode-hook
-    python-mode-hook
+    c-mode-hook
+    css-mode-hook
+    dockerfile-mode-hook
+    emacs-lisp-mode-hook
+    html-mode-hook
     js-mode-hook
     json-mode-hook
-    yaml-mode-hook
-    html-mode-hook
-    mhtml-mode-hook
-    css-mode-hook
     latex-mode-hook
-    dockerfile-mode-hook))
+    lisp-interaction-mode-hook
+    mhtml-mode-hook
+    python-mode-hook
+    scheme-mode-hook
+    scheme-mode-hook
+    sh-mode-hook
+    yaml-mode-hook))
   (add-hook hook #'my/my-indent-mode))
 (dolist
   (hook '(
-    sh-mode-hook
-    c-mode-hook
     c++-mode-hook
-    python-mode-hook
-    html-mode-hook
-    mhtml-mode-hook
+    c-mode-hook
     css-mode-hook
+    dockerfile-mode-hook
+    html-mode-hook
     latex-mode-hook
-    dockerfile-mode-hook))
+    mhtml-mode-hook
+    python-mode-hook
+    sh-mode-hook))
   (add-hook hook (lambda () (my/detect-indent 4))))
 (dolist
   (hook '(
     emacs-lisp-mode-hook
-    lisp-interaction-mode-hook
     js-mode-hook
     json-mode-hook
+    lisp-interaction-mode-hook
+    scheme-mode-hook
     yaml-mode-hook))
   (add-hook hook (lambda () (my/detect-indent 2))))
 
