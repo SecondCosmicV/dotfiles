@@ -103,6 +103,7 @@
   (hook '(
     c++-mode-hook
     c-mode-hook
+    conf-unix-mode-hook
     css-mode-hook
     dockerfile-mode-hook
     emacs-lisp-mode-hook
@@ -122,6 +123,7 @@
   (hook '(
     c++-mode-hook
     c-mode-hook
+    conf-unix-mode-hook
     css-mode-hook
     dockerfile-mode-hook
     html-mode-hook
