@@ -59,7 +59,7 @@
         (one-shot? #t)
         (start #~(lambda ()
           (system (string-append
-            "export PATH='/run/current-system/profile/sbin' && "
+            "export PATH=\"/run/current-system/profile/sbin\" && "
             "iptables -P FORWARD DROP && "
             "iptables -P INPUT DROP && "
             "iptables -A INPUT -p udp -s localhost -j ACCEPT && "
@@ -95,16 +95,11 @@
         (requirement '(data-mounter))
         (one-shot? #t)
         (start #~(lambda ()
-          (invoke
-            "/run/current-system/profile/bin/wg-quick"
-            "up"
-            "/mnt/data/stuff/vpn/vpn.conf")
-          #t))
-        (stop #~(lambda ()
-          (invoke
-            "/run/current-system/profile/bin/wg-quick"
-            "down"
-            "/mnt/data/stuff/vpn/vpn.conf")
+          (system (string-append
+            "export PATH=\"/run/current-system/profile/bin\" && "
+            "cd /mnt/data/stuff/vpn && "
+            "wg-quick down ./vpn.conf; "
+            "wg-quick up ./vpn.conf"))
           #t)))
       (shepherd-service
         (provision '(brightness-setter))
