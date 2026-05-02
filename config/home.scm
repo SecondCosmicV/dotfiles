@@ -8,6 +8,7 @@
   (gnu packages admin)
   (gnu packages browser-extensions)
   (gnu packages chromium)
+  (gnu packages dns)
   (gnu packages education)
   (gnu packages emacs)
   (gnu packages fonts)
@@ -79,7 +80,8 @@
     xinit
     xrandr
     xrdb
-    xset))
+    xset
+    (list isc-bind "utils")))
   (services (list
     (service home-bash-service-type (home-bash-configuration
       (aliases '(("sudo" . "sudo --preserve-env=TERMINFO_DIRS")))))
