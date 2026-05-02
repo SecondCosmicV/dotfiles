@@ -82,6 +82,10 @@
   (services (list
     (service home-bash-service-type (home-bash-configuration
       (aliases '(("sudo" . "sudo --preserve-env=TERMINFO_DIRS")))))
+   (service home-inputrc-service-type (home-inputrc-configuration
+      (key-bindings `(
+        ("\"\\eOd\"" . "backward-word")
+        ("\"\\eOc\"" . "forward-word")))))
     (service home-dotfiles-service-type
       (home-dotfiles-configuration
         (directories '("../files"))))
