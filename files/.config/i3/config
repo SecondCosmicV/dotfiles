@@ -2,16 +2,18 @@ set $mod Mod4
 font pango:monospace 9
 exec --no-startup-id nm-applet
 exec --no-startup-id xset s off -dpms
-exec --no-startup-id setxkbmap -layout us,hu -option grp:win_space_toggle
+exec --no-startup-id setxkbmap -layout us
 exec --no-startup-id dconf write /org/gtk/settings/file-chooser/show-hidden true
 exec --no-startup-id feh --bg-scale ./stuff/wallps/wallp.png
 exec --no-startup-id emacs --daemon
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10%
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10%
-bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle
-bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle
-bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl set 5%-
-bindsym XF86MonBrightnessUp exec --no-startup-id brightnessctl set 5%+
+exec --no-startup-id virsh -c qemu:///system net-start default
+set $refresh_status kill -USR1 $(cat /tmp/status.pid)
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_status
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_status
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_status
+bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_status
+bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl set 5%- && $refresh_status
+bindsym XF86MonBrightnessUp exec --no-startup-id brightnessctl set 5%+ && $refresh_status
 floating_modifier $mod
 tiling_drag modifier titlebar
 bindsym $mod+Return exec --no-startup-id i3-sensible-terminal
@@ -69,6 +71,7 @@ mode "resize" {
     bindsym Return mode "default"
 }
 bindsym $mod+r mode "resize"
+bindsym $mod+space exec --no-startup-id kytool toggle && $refresh_status
 bindsym Print exec --no-startup-id flameshot gui
 bindsym $mod+m exec --no-startup-id emacsclient -c
 bindsym $mod+b exec --no-startup-id icecat
@@ -78,6 +81,6 @@ bindsym $mod+i exec --no-startup-id flatpak run org.signal.Signal
 bindsym $mod+Shift+i exec --no-startup-id flatpak run com.discordapp.Discord
 bindsym $mod+a exec --no-startup-id flatpak run com.spotify.Client
 bar {
-    status_command while date +'%Y-%m-%d %X (UTC%:z)'; do sleep 1; done
+    status_command status
 }
 

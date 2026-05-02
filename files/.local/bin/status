@@ -1,0 +1,64 @@
+#!/usr/bin/env python3
+import os
+import sys
+from subprocess import PIPE,Popen
+import signal
+from time import sleep
+from datetime import datetime
+class PulseModule:
+    def __init__(self,typ):
+        self.typ=typ
+    def update(self):
+        self.display='{}: {}{}'.format(
+            self.typ,
+            Popen([
+                'pactl',
+                f'get-{self.typ}-volume',
+                '@DEFAULT_{}@'.format(self.typ.upper())
+            ],stdout=PIPE).stdout.read().decode().split()[4][:-1],
+            'u' if 'nein' in Popen([
+                'pactl',
+                f'get-{self.typ}-mute',
+                '@DEFAULT_{}@'.format(self.typ.upper())
+            ],stdout=PIPE).stdout.read().decode() else 'm',
+        )
+class KeyboardModule:
+    def __init__(self):
+        pass
+    def update(self):
+        self.display='keyb: '+Popen(['kytool','query'],stdout=PIPE).stdout.read().decode().strip()
+class BatteryModule:
+    def __init__(self):
+        pass
+    def update(self):
+        a=Popen('acpi',stdout=PIPE).stdout.read().decode().strip().split(': ')[1].split(', ')
+        self.display='bat: '+a[1][:-1]+a[0][0].lower()
+class TimeModule:
+    def __init__(self):
+        pass
+    def update(self):
+        time_string=datetime.now().astimezone().isoformat(' ')
+        dot_idx=time_string.find('.')
+        self.display='earth: {} (UTC{})'.format(time_string[:dot_idx],time_string[dot_idx+7:])
+modules=[
+    (PulseModule('source'),10),
+    (PulseModule('sink'),10),
+    (KeyboardModule(),10),
+    (BatteryModule(),10),
+    (TimeModule(),1),
+]
+def refresh(i):
+    for x,period_s in modules:
+        if not (i%period_s):
+            x.update()
+    sys.stdout.write(' | '.join(map(lambda x:x[0].display,modules))+'\n')
+    sys.stdout.flush()
+with open('/tmp/status.pid','w') as f:
+    f.write(str(os.getpid()))
+signal.signal(signal.SIGUSR1,lambda signum,stack:refresh(0))
+i=0
+while True:
+    refresh(i)
+    sleep(1)
+    i+=1
+
