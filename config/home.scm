@@ -1,6 +1,7 @@
 (use-modules
   (gnu)
   (gnu home)
+  (gnu home services)
   (gnu home services dotfiles)
   (gnu home services fontutils)
   (gnu home services shells)
@@ -79,16 +80,15 @@
     xrdb
     xset))
   (services (list
-    (service home-bash-service-type
-      (home-bash-configuration
-        (environment-variables '(
-          ("PATH" . "$HOME/.local/bin:$PATH")
-          ("EDITOR" . "emacsclient")
-          ("DOCKER_BUILDKIT" . "0")))
-        (aliases '(("sudo" . "sudo --preserve-env=TERMINFO_DIRS")))))
+    (service home-bash-service-type (home-bash-configuration
+      (aliases '(("sudo" . "sudo --preserve-env=TERMINFO_DIRS")))))
     (service home-dotfiles-service-type
       (home-dotfiles-configuration
         (directories '("../files"))))
+    (simple-service 'my-env-vars-service home-environment-variables-service-type '(
+      ("PATH" . "$HOME/.local/bin:$PATH")
+      ("EDITOR" . "emacsclient")
+      ("DOCKER_BUILDKIT" . "0")))
     (simple-service 'my-profile-service home-shell-profile-service-type (list
       (plain-file "my-profile" "if [ \"$(tty)\" = \"/dev/tty1\" ]; then exec startx; fi")))
     (simple-service 'my-fontconfig-service home-fontconfig-service-type (list
