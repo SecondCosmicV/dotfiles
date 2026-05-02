@@ -12,17 +12,17 @@
   (gnu packages emacs)
   (gnu packages fonts)
   (gnu packages freedesktop)
+  (gnu packages gimp)
   (gnu packages gnome)
+  (gnu packages gnome-circle)
   (gnu packages gnuzilla)
   (gnu packages image)
   (gnu packages image-viewers)
   (gnu packages imagemagick)
   (gnu packages inkscape)
-  (gnu packages kde-graphics)
   (gnu packages libreoffice)
   (gnu packages linux)
   (gnu packages package-management)
-  (gnu packages password-utils)
   (gnu packages pulseaudio)
   (gnu packages python)
   (gnu packages ssh)
@@ -48,6 +48,7 @@
     font-google-noto-emoji
     font-google-noto-sans-cjk
     font-google-noto-sans-hebrew
+    gimp
     git
     hicolor-icon-theme
     htop
@@ -55,8 +56,6 @@
     iftop
     imagemagick
     inkscape
-    keepassxc
-    krita
     libreoffice
     mpv
     neofetch
@@ -68,12 +67,14 @@
     python
     qemu
     rclone
+    secrets
     setxkbmap
     torbrowser
     ublock-origin/chromium
     ungoogled-chromium
     virt-manager
     xclip
+    xdg-desktop-portal-gtk
     xdg-utils
     xinit
     xrandr
@@ -92,6 +93,7 @@
     (simple-service 'my-env-vars-service home-environment-variables-service-type '(
       ("PATH" . "$HOME/.local/bin:$PATH")
       ("EDITOR" . "emacsclient")
+      ("QT_QPA_PLATFORMTHEME" . "xdgdesktopportal")
       ("DOCKER_BUILDKIT" . "0")))
     (simple-service 'my-profile-service home-shell-profile-service-type (list
       (plain-file "my-profile" "if [ \"$(tty)\" = \"/dev/tty1\" ]; then exec startx; fi")))

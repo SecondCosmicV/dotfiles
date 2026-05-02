@@ -3,8 +3,9 @@ font pango:monospace 9
 exec --no-startup-id nm-applet
 exec --no-startup-id xset s off -dpms
 exec --no-startup-id setxkbmap -layout us,hu -option grp:win_space_toggle
-exec --no-startup-id emacs --daemon
+exec --no-startup-id dconf write /org/gtk/settings/file-chooser/show-hidden true
 exec --no-startup-id feh --bg-scale ./stuff/wallps/wallp.png
+exec --no-startup-id emacs --daemon
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10%
 bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10%
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle
@@ -72,7 +73,7 @@ bindsym Print exec --no-startup-id flameshot gui
 bindsym $mod+m exec --no-startup-id emacsclient -c
 bindsym $mod+b exec --no-startup-id icecat
 bindsym $mod+Shift+b exec --no-startup-id chromium
-bindsym $mod+k exec --no-startup-id keepassxc
+bindsym $mod+k exec --no-startup-id secrets
 bindsym $mod+i exec --no-startup-id flatpak run org.signal.Signal
 bindsym $mod+Shift+i exec --no-startup-id flatpak run com.discordapp.Discord
 bindsym $mod+a exec --no-startup-id flatpak run com.spotify.Client
