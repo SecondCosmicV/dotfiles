@@ -9,49 +9,51 @@ class PulseModule:
     def __init__(self,typ):
         self.typ=typ
     def update(self):
-        self.display='{}: {}{}'.format(
-            self.typ,
-            Popen([
-                'pactl',
-                f'get-{self.typ}-volume',
-                '@DEFAULT_{}@'.format(self.typ.upper())
-            ],stdout=PIPE).stdout.read().decode().split()[4][:-1],
-            'u' if 'nein' in Popen([
-                'pactl',
-                f'get-{self.typ}-mute',
-                '@DEFAULT_{}@'.format(self.typ.upper())
-            ],stdout=PIPE).stdout.read().decode() else 'm',
-        )
+        outs=[Popen([
+            'pactl',
+            f'get-{self.typ}-{x}',
+            '@DEFAULT_{}@'.format(self.typ.upper())
+        ],stdout=PIPE).stdout.read().decode() for x in ['volume','mute']]
+        self.display=''.join([
+            outs[0].split()[4][:-1],
+            'u' if 'nein' in outs[1] else 'm',
+        ])
 class KeyboardModule:
     def __init__(self):
         pass
     def update(self):
-        self.display='keyb: '+Popen(['kytool','query'],stdout=PIPE).stdout.read().decode().strip()
+        self.display=Popen(['kytool','query'],stdout=PIPE).stdout.read().decode().strip()
+class BrightnessModule:
+    def __init__(self):
+        pass
+    def update(self):
+        self.display=Popen(['brightnessctl'],stdout=PIPE).stdout.read().decode().splitlines()[1].strip().split()[3][1:-2]
 class BatteryModule:
     def __init__(self):
         pass
     def update(self):
-        a=Popen('acpi',stdout=PIPE).stdout.read().decode().strip().split(': ')[1].split(', ')
-        self.display='bat: '+a[1][:-1]+a[0][0].lower()
+        a=Popen(['acpi'],stdout=PIPE).stdout.read().decode().strip().split(': ')[1].split(', ')
+        self.display=a[1][:-1]+a[0][0].lower()
 class TimeModule:
     def __init__(self):
         pass
     def update(self):
         time_string=datetime.now().astimezone().isoformat(' ')
         dot_idx=time_string.find('.')
-        self.display='earth: {} (UTC{})'.format(time_string[:dot_idx],time_string[dot_idx+7:])
+        self.display='{} (UTC{})'.format(time_string[:dot_idx],time_string[dot_idx+7:])
 modules=[
-    (PulseModule('source'),10),
-    (PulseModule('sink'),10),
-    (KeyboardModule(),10),
-    (BatteryModule(),10),
-    (TimeModule(),1),
+    (PulseModule('source'),'srce',10),
+    (PulseModule('sink'),'sink',10),
+    (KeyboardModule(),'keyb',10),
+    (BrightnessModule(),'brig',10),
+    (BatteryModule(),'bat',10),
+    (TimeModule(),'earth',1),
 ]
 def refresh(i):
-    for x,period_s in modules:
+    for module,label,period_s in modules:
         if not (i%period_s):
-            x.update()
-    sys.stdout.write(' | '.join(map(lambda x:x[0].display,modules))+'\n')
+            module.update()
+    sys.stdout.write(' | '.join(map(lambda x:'{}: {}'.format(x[1],x[0].display),modules))+'\n')
     sys.stdout.flush()
 with open('/tmp/status.pid','w') as f:
     f.write(str(os.getpid()))
