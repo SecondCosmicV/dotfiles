@@ -4,7 +4,6 @@
   (gnu packages cryptsetup)
   (gnu packages linux)
   (gnu packages suckless)
-  (gnu packages vpn)
   (gnu packages wm)
   (gnu packages xdisorg)
   (gnu services desktop)
@@ -16,6 +15,9 @@
   (nongnu system linux-initrd))
 (operating-system
   (kernel linux)
+  (kernel-arguments (cons
+    "ipv6.disable=1"
+    %default-kernel-arguments))
   (initrd microcode-initrd)
   (firmware (cons
     iwlwifi-firmware
@@ -44,8 +46,7 @@
       dmenu
       i3-wm
       iptables
-      rxvt-unicode
-      wireguard-tools)
+      rxvt-unicode)
     %base-packages))
   (services (cons*
     (service xorg-server-service-type)
@@ -89,17 +90,6 @@
             "/run/setuid-programs/mount"
             "/dev/mapper/data"
             "/mnt/data")
-          #t)))
-      (shepherd-service
-        (provision '(vpn-connector))
-        (requirement '(data-mounter))
-        (one-shot? #t)
-        (start #~(lambda ()
-          (system (string-append
-            "export PATH=\"/run/current-system/profile/bin\" && "
-            "cd /mnt/data/stuff/vpn && "
-            "wg-quick down ./vpn.conf; "
-            "wg-quick up ./vpn.conf"))
           #t)))
       (shepherd-service
         (provision '(brightness-setter))
