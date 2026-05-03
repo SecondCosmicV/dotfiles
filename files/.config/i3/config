@@ -3,7 +3,6 @@ font pango:monospace 9
 exec --no-startup-id nm-applet
 exec --no-startup-id xset s off -dpms
 exec --no-startup-id setxkbmap -layout us
-exec --no-startup-id dconf write /org/gtk/settings/file-chooser/show-hidden true
 exec --no-startup-id feh --bg-scale ./stuff/wallps/wallp.png
 exec --no-startup-id emacs --daemon
 exec --no-startup-id virsh -c qemu:///system net-start default
