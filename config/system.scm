@@ -57,7 +57,10 @@
     (service docker-service-type)
     (service tlp-service-type (tlp-configuration
       (stop-charge-thresh-bat0 80)
-      (start-charge-thresh-bat0 75)))
+      (start-charge-thresh-bat0 75)
+      (disks-devices '("sda" "sdb"))
+      (disk-apm-level-on-ac '("255"))
+      (disk-apm-level-on-bat '("255"))))
     (simple-service 'my-service shepherd-root-service-type (list
       (shepherd-service
         (provision '(firewall-configurator))
