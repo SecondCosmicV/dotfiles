@@ -57,10 +57,7 @@
     (service docker-service-type)
     (service tlp-service-type (tlp-configuration
       (stop-charge-thresh-bat0 80)
-      (start-charge-thresh-bat0 75)
-      (disks-devices '("sda" "sdb"))
-      (disk-apm-level-on-ac '("255"))
-      (disk-apm-level-on-bat '("255"))))
+      (start-charge-thresh-bat0 75)))
     (simple-service 'my-service shepherd-root-service-type (list
       (shepherd-service
         (provision '(firewall-configurator))
@@ -97,6 +94,16 @@
             "/run/setuid-programs/mount"
             "/dev/mapper/data"
             "/mnt/data")
+          #t)))
+      (shepherd-service
+        (provision '(disk-spindown-preventor))
+        (requirement '(data-mounter))
+        (one-shot? #t)
+        (start #~(lambda ()
+          (system (string-append
+            "echo on > /sys/block/$("
+            "/run/current-system/profile/bin/lsblk -ndo pkname /dev/disk/by-uuid/5bebe2d2-9fce-4848-be18-0929cba8a61d"
+            ")/device/power/control"))
           #t)))
       (shepherd-service
         (provision '(brightness-setter))
