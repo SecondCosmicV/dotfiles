@@ -41,6 +41,7 @@
     acpi
     adwaita-icon-theme
     dragon-drop
+    efibootmgr
     emacs
     evince
     feh
@@ -62,8 +63,10 @@
     imagemagick
     inkscape
     libreoffice
+    lm-sensors
     mpv
     neofetch
+    numlockx
     obs
     openboard
     openssh
