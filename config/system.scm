@@ -8,6 +8,7 @@
   (gnu packages xdisorg)
   (gnu services desktop)
   (gnu services docker)
+  (gnu services pm)
   (gnu services shepherd)
   (gnu services virtualization)
   (gnu services xorg)
@@ -54,6 +55,9 @@
     (service virtlog-service-type)
     (service containerd-service-type)
     (service docker-service-type)
+    (service tlp-service-type (tlp-configuration
+      (stop-charge-thresh-bat0 80)
+      (start-charge-thresh-bat0 75)))
     (simple-service 'my-service shepherd-root-service-type (list
       (shepherd-service
         (provision '(firewall-configurator))

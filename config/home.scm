@@ -8,6 +8,7 @@
   (gnu packages admin)
   (gnu packages browser-extensions)
   (gnu packages chromium)
+  (gnu packages commencement)
   (gnu packages dns)
   (gnu packages education)
   (gnu packages emacs)
@@ -17,6 +18,7 @@
   (gnu packages gnome)
   (gnu packages gnome-circle)
   (gnu packages gnuzilla)
+  (gnu packages gtk)
   (gnu packages image)
   (gnu packages image-viewers)
   (gnu packages imagemagick)
@@ -38,6 +40,7 @@
   (packages (list
     acpi
     adwaita-icon-theme
+    dragon-drop
     emacs
     evince
     feh
@@ -49,6 +52,7 @@
     font-google-noto-emoji
     font-google-noto-sans-cjk
     font-google-noto-sans-hebrew
+    gcc-toolchain
     gimp
     git
     hicolor-icon-theme
