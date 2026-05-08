@@ -23,6 +23,11 @@ class KeyboardModule:
         pass
     def update(self):
         self.display=Popen(['kytool','query'],stdout=PIPE).stdout.read().decode().strip()
+class TemperatureModule:
+    def __init__(self):
+        pass
+    def update(self):
+        self.display=str(int(float(Popen(['sensors'],stdout=PIPE).stdout.read().decode().split('\n\n')[4].splitlines()[3].split()[1][:-2])))
 class BrightnessModule:
     def __init__(self):
         pass
@@ -45,6 +50,7 @@ modules=[
     (PulseModule('source'),'srce',10),
     (PulseModule('sink'),'sink',10),
     (KeyboardModule(),'keyb',10),
+    (TemperatureModule(),'temp',10),
     (BrightnessModule(),'brig',10),
     (BatteryModule(),'bat',10),
     (TimeModule(),'earth',1),

@@ -101,9 +101,9 @@
         (directories '("../files"))))
     (simple-service 'my-env-vars-service home-environment-variables-service-type '(
       ("PATH" . "$HOME/.local/bin:$PATH")
-      ("EDITOR" . "emacsclient")
-      ("QT_QPA_PLATFORMTHEME" . "xdgdesktopportal")
-      ("DOCKER_BUILDKIT" . "0")))
+      ("EDITOR" . "nano")
+      ("DOCKER_BUILDKIT" . "0")
+      ("QT_QPA_PLATFORMTHEME" . "xdgdesktopportal")))
     (simple-service 'my-profile-service home-shell-profile-service-type (list
       (plain-file "my-profile" "if [ \"$(tty)\" = \"/dev/tty1\" ]; then exec startx; fi")))
     (simple-service 'my-fontconfig-service home-fontconfig-service-type (list
