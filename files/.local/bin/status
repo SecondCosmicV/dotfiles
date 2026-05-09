@@ -18,27 +18,39 @@ class PulseModule:
             outs[0].split()[4][:-1],
             'u' if 'nein' in outs[1] else 'm',
         ])
-class KeyboardModule:
-    def __init__(self):
-        pass
-    def update(self):
-        self.display=Popen(['kytool','query'],stdout=PIPE).stdout.read().decode().strip()
-class TemperatureModule:
-    def __init__(self):
-        pass
-    def update(self):
-        self.display=str(int(float(Popen(['sensors'],stdout=PIPE).stdout.read().decode().split('\n\n')[4].splitlines()[3].split()[1][:-2])))
 class BrightnessModule:
     def __init__(self):
         pass
     def update(self):
         self.display=Popen(['brightnessctl'],stdout=PIPE).stdout.read().decode().splitlines()[1].strip().split()[3][1:-2]
+class TemperatureModule:
+    def __init__(self):
+        pass
+    def update(self):
+        self.display=str(int(float(Popen(['sensors'],stdout=PIPE).stdout.read().decode().split('\n\n')[4].splitlines()[3].split()[1][:-2])))
+class CPUModule:
+    def __init__(self):
+        self.curr=(0,0)
+    def update(self):
+        self.prev=self.curr
+        with open('/proc/stat','r') as f:
+            fields=list(map(int,f.readline().split()[1:]))
+        self.curr=(
+            fields[3],
+            sum(fields),
+        )
+        self.display=str(int(100*(1-(self.curr[0]-self.prev[0])/(self.curr[1]-self.prev[1]))))
 class BatteryModule:
     def __init__(self):
         pass
     def update(self):
         a=Popen(['acpi'],stdout=PIPE).stdout.read().decode().strip().split(': ')[1].split(', ')
         self.display=a[1][:-1]+a[0][0].lower()
+class KeyboardModule:
+    def __init__(self):
+        pass
+    def update(self):
+        self.display=Popen(['kytool','query'],stdout=PIPE).stdout.read().decode().strip()
 class TimeModule:
     def __init__(self):
         pass
@@ -49,10 +61,11 @@ class TimeModule:
 modules=[
     (PulseModule('source'),'srce',10),
     (PulseModule('sink'),'sink',10),
-    (KeyboardModule(),'keyb',10),
-    (TemperatureModule(),'temp',10),
     (BrightnessModule(),'brig',10),
+    (TemperatureModule(),'temp',10),
+    (CPUModule(),'cpu',2),
     (BatteryModule(),'bat',10),
+    (KeyboardModule(),'keyb',10),
     (TimeModule(),'earth',1),
 ]
 def refresh(i):
