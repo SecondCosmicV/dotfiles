@@ -27,19 +27,22 @@ class TemperatureModule:
     def __init__(self):
         pass
     def update(self):
-        self.display=str(int(float(Popen(['sensors'],stdout=PIPE).stdout.read().decode().split('\n\n')[4].splitlines()[3].split()[1][:-2])))
+        self.display=str(int(float(next(filter(
+            lambda x:x.startswith('thinkpad-isa-0000'),
+            Popen(['sensors'],stdout=PIPE).stdout.read().decode().split('\n\n'),
+        )).splitlines()[3].split()[1][:-2])))
 class CPUModule:
     def __init__(self):
         self.curr=(0,0)
     def update(self):
-        self.prev=self.curr
+        prev=self.curr
         with open('/proc/stat','r') as f:
             fields=list(map(int,f.readline().split()[1:]))
         self.curr=(
             fields[3],
             sum(fields),
         )
-        self.display=str(int(100*(1-(self.curr[0]-self.prev[0])/(self.curr[1]-self.prev[1]))))
+        self.display=str(int(100*(1-(self.curr[0]-prev[0])/(self.curr[1]-prev[1]))))
 class BatteryModule:
     def __init__(self):
         pass
