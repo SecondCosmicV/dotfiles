@@ -26,6 +26,7 @@
   (gnu packages libreoffice)
   (gnu packages linux)
   (gnu packages package-management)
+  (gnu packages polkit)
   (gnu packages pulseaudio)
   (gnu packages python)
   (gnu packages ssh)
@@ -70,6 +71,7 @@
     obs
     openboard
     openssh
+    polkit-gnome
     powertop
     pulseaudio
     python

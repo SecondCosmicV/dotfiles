@@ -5,6 +5,7 @@ exec --no-startup-id xset b off s off -dpms
 exec --no-startup-id setxkbmap -layout us
 exec --no-startup-id numlockx on
 exec --no-startup-id feh --bg-scale ./stuff/wallps/wallp.png
+exec --no-startup-id ~/.guix-home/profile/libexec/polkit-gnome-authentication-agent-1
 exec --no-startup-id emacs --daemon
 exec --no-startup-id virsh -c qemu:///system net-start default
 set $refresh_status kill -USR1 $(cat /tmp/status.pid)

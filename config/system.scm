@@ -1,5 +1,4 @@
 (use-modules
-  (srfi srfi-1)
   (gnu)
   (gnu packages cryptsetup)
   (gnu packages linux)
@@ -107,10 +106,8 @@
             "set"
             "20%")
           #t)))))
-    (remove
-      (lambda (x)
-        (eq? (service-kind x) gdm-service-type))
-      %desktop-services)))
+    (modify-services %desktop-services
+      (delete gdm-service-type))))
   (bootloader (bootloader-configuration
     (bootloader grub-efi-bootloader)
     (targets '("/boot/efi"))
