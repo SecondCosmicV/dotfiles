@@ -79,6 +79,7 @@
     rclone
     secrets
     setxkbmap
+    stow
     torbrowser
     ublock-origin/chromium
     ungoogled-chromium
@@ -100,9 +101,7 @@
         ("\"\\eOc\"" . "forward-word")))))
     (service home-dotfiles-service-type
       (home-dotfiles-configuration
-        (directories (list
-          "../files"
-          (string-append (getenv "HOME") "/stuff/secrets")))))
+        (directories '("../files"))))
     (simple-service 'my-env-vars-service home-environment-variables-service-type '(
       ("PATH" . "$HOME/.local/bin:$PATH")
       ("EDITOR" . "nano")
