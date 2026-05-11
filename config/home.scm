@@ -99,9 +99,8 @@
       (key-bindings `(
         ("\"\\eOd\"" . "backward-word")
         ("\"\\eOc\"" . "forward-word")))))
-    (service home-dotfiles-service-type
-      (home-dotfiles-configuration
-        (directories '("../files"))))
+    (service home-dotfiles-service-type (home-dotfiles-configuration
+      (directories '("../files"))))
     (simple-service 'my-env-vars-service home-environment-variables-service-type '(
       ("PATH" . "$HOME/.local/bin:$PATH")
       ("EDITOR" . "nano")
