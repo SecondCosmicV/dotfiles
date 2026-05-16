@@ -9,6 +9,7 @@
   (gnu packages browser-extensions)
   (gnu packages chromium)
   (gnu packages commencement)
+  (gnu packages compression)
   (gnu packages dns)
   (gnu packages education)
   (gnu packages emacs)
@@ -39,6 +40,7 @@
   (gnu packages xorg))
 (home-environment
   (packages (list
+    7zip
     acpi
     adwaita-icon-theme
     dragon-drop
