@@ -1,6 +1,5 @@
 (use-modules
   (gnu)
-  (gnu home)
   (gnu home services)
   (gnu home services dotfiles)
   (gnu home services fontutils)
@@ -26,16 +25,19 @@
   (gnu packages inkscape)
   (gnu packages libreoffice)
   (gnu packages linux)
+  (gnu packages lxde)
   (gnu packages package-management)
   (gnu packages polkit)
   (gnu packages pulseaudio)
   (gnu packages python)
   (gnu packages ssh)
+  (gnu packages suckless)
   (gnu packages sync)
   (gnu packages tor-browsers)
   (gnu packages version-control)
   (gnu packages video)
   (gnu packages virtualization)
+  (gnu packages wm)
   (gnu packages xdisorg)
   (gnu packages xorg))
 (home-environment
@@ -43,6 +45,7 @@
     7zip
     acpi
     adwaita-icon-theme
+    dmenu
     dragon-drop
     efibootmgr
     emacs
@@ -59,14 +62,17 @@
     gcc-toolchain
     gimp
     git
+    gnu-make
     hicolor-icon-theme
     htop
+    i3-wm
     icecat
     iftop
     imagemagick
     inkscape
     libreoffice
     lm-sensors
+    lxterminal
     mpv
     neofetch
     numlockx
@@ -95,12 +101,6 @@
     xset
     (list isc-bind "utils")))
   (services (list
-    (service home-bash-service-type (home-bash-configuration
-      (aliases '(("sudo" . "sudo --preserve-env=TERMINFO_DIRS")))))
-   (service home-inputrc-service-type (home-inputrc-configuration
-      (key-bindings `(
-        ("\"\\eOd\"" . "backward-word")
-        ("\"\\eOc\"" . "forward-word")))))
     (service home-dotfiles-service-type (home-dotfiles-configuration
       (directories '("../files"))))
     (simple-service 'my-env-vars-service home-environment-variables-service-type '(

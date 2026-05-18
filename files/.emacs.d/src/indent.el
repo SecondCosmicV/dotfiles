@@ -85,7 +85,7 @@
     map))
 (define-minor-mode my/my-indent-mode
   "Minor mode for better indentation logic."
-  :lighter " MyIndent"
+  :lighter " MI"
   :keymap my/my-indent-mode-map)
 (add-hook 'before-save-hook
   (lambda ()

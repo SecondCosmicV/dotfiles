@@ -2,9 +2,6 @@
   (gnu)
   (gnu packages cryptsetup)
   (gnu packages linux)
-  (gnu packages suckless)
-  (gnu packages wm)
-  (gnu packages xdisorg)
   (gnu services desktop)
   (gnu services docker)
   (gnu services pm)
@@ -43,10 +40,7 @@
     (list
       brightnessctl
       cryptsetup
-      dmenu
-      i3-wm
-      iptables
-      rxvt-unicode)
+      iptables)
     %base-packages))
   (services (cons*
     (service xorg-server-service-type)
