@@ -54,7 +54,7 @@ class KeyboardModule:
     def __init__(self):
         pass
     def update(self):
-        self.display=Popen(['kytool','query'],stdout=PIPE).stdout.read().decode().strip()
+        self.display=Popen(['kblm','query'],stdout=PIPE).stdout.read().decode().strip()
 class TimeModule:
     def __init__(self):
         pass

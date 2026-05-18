@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# KeyBoard Layout Manager
 from sys import argv as args
 from subprocess import Popen,PIPE
 def get_curr_layout():

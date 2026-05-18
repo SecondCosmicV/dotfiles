@@ -72,7 +72,7 @@ mode "resize" {
     bindsym Return mode "default"
 }
 bindsym $mod+r mode "resize"
-bindsym $mod+space exec --no-startup-id kytool toggle && $refresh_status
+bindsym $mod+space exec --no-startup-id kblm toggle && $refresh_status
 bindsym Print exec --no-startup-id flameshot gui
 bindsym $mod+m exec --no-startup-id emacsclient -c
 bindsym $mod+b exec --no-startup-id icecat
