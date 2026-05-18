@@ -3,9 +3,25 @@ import os
 import sys
 from subprocess import PIPE,Popen
 import signal
-from time import sleep
+from time import time,sleep
 from datetime import datetime
 from contextlib import suppress
+class NetModule:
+    def __init__(self,interf):
+        self.interf=interf
+        self.curr_bytes=[0,0]
+        self.curr_upd_ts=0
+    def update(self):
+        prev_bytes=tuple(self.curr_bytes)
+        prev_upd_ts=self.curr_upd_ts
+        for i,x in enumerate('rt'):
+            with open(f'/sys/class/net/{self.interf}/statistics/{x}x_bytes','r') as f:
+                self.curr_bytes[i]=int(f.read())
+        self.curr_upd_ts=int(time())
+        self.display='{:.3e}d {:.3e}u'.format(*map(
+            lambda x:(self.curr_bytes[x]-prev_bytes[x])//(self.curr_upd_ts-prev_upd_ts),
+            range(2),
+        ))
 class PulseModule:
     def __init__(self,typ):
         self.typ=typ
@@ -44,6 +60,11 @@ class CPUModule:
             sum(fields),
         )
         self.display=str(int(100*(1-(self.curr[0]-prev[0])/(self.curr[1]-prev[1]))))
+class RAMModule:
+    def __init__(self):
+        pass
+    def update(self):
+        self.display=Popen(['free','-h','--si'],stdout=PIPE).stdout.read().decode().splitlines()[1].split()[2]
 class BatteryModule:
     def __init__(self):
         pass
@@ -63,11 +84,13 @@ class TimeModule:
         dot_idx=time_string.find('.')
         self.display='{} (UTC{})'.format(time_string[:dot_idx],time_string[dot_idx+7:])
 modules=[
+    (NetModule('wlp3s0'),'net',2),
     (PulseModule('source'),'srce',10),
     (PulseModule('sink'),'sink',10),
     (BrightnessModule(),'brig',10),
     (TemperatureModule(),'temp',10),
     (CPUModule(),'cpu',2),
+    (RAMModule(),'ram',2),
     (BatteryModule(),'bat',10),
     (KeyboardModule(),'keyb',10),
     (TimeModule(),'earth',1),
