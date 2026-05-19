@@ -17,9 +17,9 @@ class NetModule:
         for i,x in enumerate('rt'):
             with open(f'/sys/class/net/{self.interf}/statistics/{x}x_bytes','r') as f:
                 self.curr_bytes[i]=int(f.read())
-        self.curr_upd_ts=int(time())
-        self.display='{:.3e}d {:.3e}u'.format(*map(
-            lambda x:(self.curr_bytes[x]-prev_bytes[x])//(self.curr_upd_ts-prev_upd_ts),
+        self.curr_upd_ts=time()
+        self.display='v{:.3e} ^{:.3e}'.format(*map(
+            lambda x:(self.curr_bytes[x]-prev_bytes[x])/(self.curr_upd_ts-prev_upd_ts),
             range(2),
         ))
 class PulseModule:
