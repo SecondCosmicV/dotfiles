@@ -10,7 +10,7 @@
   (gnu services xorg)
   (nongnu packages linux)
   (nongnu system linux-initrd))
-(operating-system
+(define-public base-operating-system (operating-system
   (kernel linux)
   (kernel-arguments (cons
     "ipv6.disable=1"
@@ -22,7 +22,7 @@
   (locale "de_DE.utf8")
   (timezone "Europe/Berlin")
   (keyboard-layout (keyboard-layout "us"))
-  (host-name "plt318")
+  (host-name "darkstar")
   (users (cons
     (user-account
       (name "peter")
@@ -53,7 +53,7 @@
       (start-charge-thresh-bat0 75)
       (ahci-runtime-pm-on-ac? #t)
       (ahci-runtime-pm-on-bat? #t)))
-    (simple-service 'my-service shepherd-root-service-type (list
+    (simple-service 'my-base-service shepherd-root-service-type (list
       (shepherd-service
         (provision '(firewall-configurator))
         (one-shot? #t)
@@ -66,29 +66,6 @@
             "iptables -A INPUT -p tcp -s localhost -j ACCEPT && "
             "iptables -A INPUT -p icmp -s localhost -j ACCEPT && "
             "iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT"))
-          #t)))
-      (shepherd-service
-        (provision '(data-unlocker))
-        (requirement '(file-systems))
-        (one-shot? #t)
-        (start #~(lambda ()
-          (system*
-            "/run/current-system/profile/sbin/cryptsetup"
-            "luksOpen"
-            "-d"
-            "/etc/datakey"
-            "/dev/disk/by-uuid/5bebe2d2-9fce-4848-be18-0929cba8a61d"
-            "data")
-          #t)))
-      (shepherd-service
-        (provision '(data-mounter))
-        (requirement '(data-unlocker))
-        (one-shot? #t)
-        (start #~(lambda ()
-          (invoke
-            "/run/setuid-programs/mount"
-            "/dev/mapper/data"
-            "/mnt/data")
           #t)))
       (shepherd-service
         (provision '(brightness-setter))
@@ -106,21 +83,6 @@
     (bootloader grub-efi-bootloader)
     (targets '("/boot/efi"))
     (keyboard-layout keyboard-layout)))
-  (mapped-devices (list
-    (mapped-device
-      (source (uuid "f8aa03c8-87e4-49c5-98ad-e3faf3e2309c"))
-      (target "cryptroot")
-      (type luks-device-mapping))))
-  (file-systems (cons*
-    (file-system
-      (mount-point "/")
-      (device "/dev/mapper/cryptroot")
-      (type "ext4")
-      (dependencies mapped-devices))
-    (file-system
-      (mount-point "/boot/efi")
-      (device (uuid "3D91-565E" 'fat))
-      (type "vfat"))
-    %base-file-systems))
-  (swap-devices (list (swap-space (target "/swapfile")))))
+  (file-systems '())
+  (swap-devices (list (swap-space (target "/swapfile"))))))
 
