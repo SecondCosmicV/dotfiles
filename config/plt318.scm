@@ -1,6 +1,9 @@
 (include "./system.scm")
 (operating-system
   (inherit base-operating-system)
+  (firmware (cons
+    iwlwifi-firmware
+    %base-firmware))
   (host-name "plt318")
   (services (cons*
     (simple-service 'plt318-service shepherd-root-service-type (list

@@ -1,3 +1,25 @@
 DOTFILES
 My dotfiles.
 
+Installation instructions:
+ - make a new gpt partition table with 2 partitions on the target disk
+  1. size: +512M, type: EFI System (1)
+  2. size: +800G, type: Linux filesystem (20)
+ - $ mkfs.vfat -F32 /dev/sdX1
+ - $ cryptsetup luksFormat /dev/sdX2
+ - $ cryptsetup luksOpen /dev/sdX2 cryptroot
+ - $ mkfs.ext4 /dev/mapper/cryptroot
+ - $ mount /dev/mapper/cryptroot /mnt
+ - $ mkdir -p /mnt/boot/efi
+ - $ mount /dev/sdX1 /mnt/boot/efi
+ - $ dd if=/dev/zero of=/mnt/swapfile bs=1G count=16 status=progress
+ - $ chmod 600 /mnt/swapfile
+ - $ mkswap /mnt/swapfile
+ - $ swapon /mnt/swapfile
+ - make sure network is available
+ - send this repo over
+ - cd into repo root / config
+ - $ herd start cow-store /mnt
+ - $ guix time-machine -C channels.scm -- system init pX.scm /mnt/
+ - $ reboot
+

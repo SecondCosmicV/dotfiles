@@ -16,9 +16,6 @@
     "ipv6.disable=1"
     %default-kernel-arguments))
   (initrd microcode-initrd)
-  (firmware (cons
-    iwlwifi-firmware
-    %base-firmware))
   (locale "de_DE.utf8")
   (timezone "Europe/Berlin")
   (keyboard-layout (keyboard-layout "us"))
@@ -36,11 +33,10 @@
         "video"
         "wheel")))
     %base-user-accounts))
-  (packages (append
-    (list
-      brightnessctl
-      cryptsetup
-      iptables)
+  (packages (cons*
+    brightnessctl
+    cryptsetup
+    iptables
     %base-packages))
   (services (cons*
     (service xorg-server-service-type)
