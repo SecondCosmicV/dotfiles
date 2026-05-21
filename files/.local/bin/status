@@ -22,6 +22,24 @@ class NetModule:
             lambda x:(self.curr_bytes[x]-prev_bytes[x])/(self.curr_upd_ts-prev_upd_ts),
             range(2),
         ))
+class DiskModule:
+    def __init__(self):
+        self.device=Popen('lsblk -slno NAME $(df -h --output=source ~/stuff | tail -n 1) | tail -n 1',shell=True,stdout=PIPE).stdout.read().decode().strip()
+        with open(f'/sys/block/{self.device}/queue/hw_sector_size','r') as f:
+            self.bytes_per_sector=int(f.read())
+        self.curr_sectors=(0,0)
+        self.curr_upd_ts=0
+    def update(self):
+        prev_sectors=self.curr_sectors
+        prev_upd_ts=self.curr_upd_ts
+        with open('/proc/diskstats','r') as f:
+            diskstats=next(filter(lambda x:x[2]==self.device,map(lambda x:x.split(),f)))
+        self.curr_sectors=(int(diskstats[5]),int(diskstats[9]))
+        self.curr_upd_ts=time()
+        self.display='v{:.3e} ^{:.3e}'.format(*map(
+            lambda x:(self.curr_sectors[x]-prev_sectors[x])*self.bytes_per_sector/(self.curr_upd_ts-prev_upd_ts),
+            range(2),
+        ))
 class PulseModule:
     def __init__(self,typ):
         self.typ=typ
@@ -85,6 +103,7 @@ class TimeModule:
         self.display='{} (UTC{})'.format(time_string[:dot_idx],time_string[dot_idx+7:])
 modules=[
     (NetModule('wlp3s0'),'net',2),
+    (DiskModule(),'disk',2),
     (PulseModule('source'),'srce',10),
     (PulseModule('sink'),'sink',10),
     (BrightnessModule(),'brig',10),
