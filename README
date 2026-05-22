@@ -2,6 +2,12 @@ DOTFILES
 My dotfiles.
 
 Installation instructions:
+ - make sure network is available
+ - $ guix install acpi curl git tmux wireguard-tools
+ - transfer a wg conf file over net and name it vpn.conf
+ - $ wg-quick up ./vpn.conf
+ - optionally check success with curl
+ - clone this repo and open this README to follow further instructions
  - make a new gpt partition table with 2 partitions on the target disk
   1. size: +512M, type: EFI System (1)
   2. size: +800G, type: Linux filesystem (20)
@@ -16,10 +22,33 @@ Installation instructions:
  - $ chmod 600 /mnt/swapfile
  - $ mkswap /mnt/swapfile
  - $ swapon /mnt/swapfile
- - make sure network is available
- - send this repo over
  - cd into repo root / config
  - $ herd start cow-store /mnt
- - $ guix time-machine -C channels.scm -- system init pX.scm /mnt/
+ - $ tmux
+  - $ guix time-machine -C channels.scm -- system init pX.scm /mnt/
+  - optionally monitor battery state with acpi along the way
+   - detach with C-b d
+   - check battery with $ acpi
+   - reattach with $ tmux attach-session -t 0
+ - $ halt
+ - remove installation media
+ - power on
+ - login as root
+ - $ passwd
+ - $ passwd USERNAME
  - $ reboot
+ - login as USERNAME
+ - connect to wifi using $ nmtui
+ - transfer stuff dir over network
+ - $ sudo nmcli connection import type wireguard file ~/stuff/vpn/vpn.conf
+ - $ guix pull
+ - $ sudo reboot
+ - cd into repo root / config (in stuff)
+ - $ guix home reconfigure home.scm
+ - $ reboot
+ - login as USERNAME
+ - open a terminal (Mod/Super+RET)
+ - cd into repo root
+ - $ ./postsetup.sh
+ - $ loginctl reboot
 
