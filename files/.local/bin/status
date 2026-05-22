@@ -7,8 +7,11 @@ from time import time,sleep
 from datetime import datetime
 from contextlib import suppress
 class NetModule:
-    def __init__(self,interf):
-        self.interf=interf
+    def __init__(self):
+        self.interf=next(filter(lambda x:x[1]=='wifi',map(
+            lambda x:x.strip().split(':'),
+            Popen(['nmcli','-t','-f','DEVICE,TYPE','device'],stdout=PIPE).stdout.read().decode().splitlines(),
+        )))[0]
         self.curr_bytes=[0,0]
         self.curr_upd_ts=0
     def update(self):
@@ -102,7 +105,7 @@ class TimeModule:
         dot_idx=time_string.find('.')
         self.display='{} (UTC{})'.format(time_string[:dot_idx],time_string[dot_idx+7:])
 modules=[
-    (NetModule('wlp3s0'),'net',2),
+    (NetModule(),'net',2),
     (DiskModule(),'disk',2),
     (PulseModule('source'),'srce',10),
     (PulseModule('sink'),'sink',10),
