@@ -23,6 +23,7 @@ Installation instructions:
  - $ mkswap /mnt/swapfile
  - $ swapon /mnt/swapfile
  - cd into repo root / config
+ - optionally edit UUIDs in pX.scm
  - $ herd start cow-store /mnt
  - $ tmux
   - $ guix time-machine -C channels.scm -- system init pX.scm /mnt/
@@ -38,14 +39,22 @@ Installation instructions:
  - $ passwd USERNAME
  - $ reboot
  - login as USERNAME
- - connect to wifi using $ nmtui
+ - connect to wifi using $ sudo nmtui
  - transfer stuff dir over network
  - $ sudo nmcli connection import type wireguard file ~/stuff/vpn/vpn.conf
+ - cd into repo root (in stuff)
+ - $ ./install.sh
  - $ guix pull
  - $ sudo reboot
- - cd into repo root / config (in stuff)
+ - login as USERNAME
+ - cd into repo root / config
+ - if UUIDs were modified $ cp /run/current-system/configuration.scm pX.scm
+ - $ sudo guix system reconfigure pX.scm
+ - $ sudo reboot
+ - login as USERNAME
+ - cd into repo root / config
  - $ guix home reconfigure home.scm
- - $ reboot
+ - $ sudo reboot
  - login as USERNAME
  - open a terminal (Mod/Super+RET)
  - cd into repo root
