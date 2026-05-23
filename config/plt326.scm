@@ -1,6 +1,9 @@
 (include "./system.scm")
 (operating-system
   (inherit base-operating-system)
+  (kernel-arguments (cons
+    "amdgpu.abmlevel=0"
+    (operating-system-user-kernel-arguments base-operating-system)))
   (firmware (cons*
     amdgpu-firmware
     realtek-firmware

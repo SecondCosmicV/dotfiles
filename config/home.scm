@@ -79,6 +79,7 @@
     obs
     openboard
     openssh
+    pigz
     polkit-gnome
     powertop
     pulseaudio
