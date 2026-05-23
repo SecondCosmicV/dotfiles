@@ -1,13 +1,14 @@
 (include "./system.scm")
 (operating-system
   (inherit base-operating-system)
-  (firmware (cons
+  (firmware (cons*
+    amdgpu-firmware
     realtek-firmware
     %base-firmware))
   (host-name "plt326")
   (mapped-devices (list
     (mapped-device
-      (source (uuid "b7cce036-b6d9-49e8-bd0a-024557d0fade"))
+      (source (uuid "31682a4c-ab7a-4db0-8be6-a5a30345b467"))
       (target "cryptroot")
       (type luks-device-mapping))))
   (file-systems (cons*
@@ -18,7 +19,7 @@
       (dependencies mapped-devices))
     (file-system
       (mount-point "/boot/efi")
-      (device (uuid "F0CE-0660" 'fat))
+      (device (uuid "F135-61D8" 'fat))
       (type "vfat"))
     %base-file-systems)))
 
