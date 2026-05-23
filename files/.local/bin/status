@@ -65,10 +65,10 @@ class TemperatureModule:
     def __init__(self):
         pass
     def update(self):
-        self.display=str(int(float(next(filter(
+        self.display=str(int(float(next(filter(lambda x:x[0]=='CPU:',map(lambda x:x.split(),next(filter(
             lambda x:x.startswith('thinkpad-isa-0000'),
             Popen(['sensors'],stdout=PIPE).stdout.read().decode().split('\n\n'),
-        )).splitlines()[3].split()[1][:-2])))
+        )).splitlines())))[1][:-2])))
 class CPUModule:
     def __init__(self):
         self.curr=(0,0)
