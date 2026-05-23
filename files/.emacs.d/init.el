@@ -34,7 +34,7 @@
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
 (setq-default truncate-lines t)
-(add-to-list 'default-frame-alist '(font . "monospace-11"))
+(add-to-list 'default-frame-alist '(font . "monospace-12"))
 (add-to-list 'display-buffer-alist '("*Async Shell Command*" display-buffer-no-window (nil)))
 (load-theme 'modus-operandi)
 (load custom-file 'noerror)
