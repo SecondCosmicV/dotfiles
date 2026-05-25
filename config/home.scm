@@ -27,6 +27,7 @@
   (gnu packages linux)
   (gnu packages lxde)
   (gnu packages package-management)
+  (gnu packages photo)
   (gnu packages polkit)
   (gnu packages pulseaudio)
   (gnu packages python)
@@ -79,6 +80,7 @@
     obs
     openboard
     openssh
+    perl-image-exiftool
     pigz
     polkit-gnome
     powertop
