@@ -25,12 +25,14 @@
   (gnu packages inkscape)
   (gnu packages libreoffice)
   (gnu packages linux)
+  (gnu packages llvm)
   (gnu packages lxde)
   (gnu packages package-management)
   (gnu packages photo)
   (gnu packages polkit)
   (gnu packages pulseaudio)
   (gnu packages python)
+  (gnu packages python-xyz)
   (gnu packages ssh)
   (gnu packages suckless)
   (gnu packages sync)
@@ -46,6 +48,7 @@
     7zip
     acpi
     adwaita-icon-theme
+    clang
     dmenu
     dragon-drop
     efibootmgr
@@ -86,6 +89,7 @@
     powertop
     pulseaudio
     python
+    python-lsp-server
     qemu
     rclone
     secrets
