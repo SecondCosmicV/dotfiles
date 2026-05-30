@@ -2,11 +2,12 @@
   :ensure t
   :init (add-to-list 'completion-at-point-functions #'cape-keyword))
 (use-package eglot
+  :custom (eglot-autoshutdown t)
   :hook (
     (c-mode . eglot-ensure)
     (c++-mode . eglot-ensure)
     (python-mode . eglot-ensure))
-  :custom (eglot-autoshutdown t))
+  :config (add-to-list 'eglot-server-programs '((c-mode c++-mode) . ("clangd" "--header-insertion=never"))))
 (use-package corfu
   :ensure t
   :custom
@@ -15,6 +16,7 @@
   (corfu-auto-delay 0)
   (corfu-cycle t)
   (corfu-quit-no-match t)
+  :bind (:map corfu-map ("<escape>" . corfu-quit))
   :hook ((prog-mode . corfu-mode)))
 (setq-default eglot-workspace-configuration '(:pylsp (:plugins (:pycodestyle (:enabled nil)))))
 (add-hook 'eglot-managed-mode-hook (lambda ()
