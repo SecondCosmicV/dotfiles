@@ -16,11 +16,15 @@
   (corfu-auto-delay 0)
   (corfu-cycle t)
   (corfu-quit-no-match t)
-  :bind (:map corfu-map ("<escape>" . corfu-quit))
+  :bind (:map corfu-map ("RET" . nil))
   :hook ((prog-mode . corfu-mode)))
 (setq-default eglot-workspace-configuration '(:pylsp (:plugins (:pycodestyle (:enabled nil)))))
 (add-hook 'eglot-managed-mode-hook (lambda ()
-  (setq-local completion-at-point-functions (list (cape-capf-super
-    #'eglot-completion-at-point
-    #'cape-keyword)))))
+  (when
+    (or
+      (derived-mode-p 'c-mode)
+      (derived-mode-p 'c++-mode))
+    (setq-local completion-at-point-functions (list (cape-capf-super
+      #'eglot-completion-at-point
+      #'cape-keyword))))))
 
