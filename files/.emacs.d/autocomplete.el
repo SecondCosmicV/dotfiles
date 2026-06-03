@@ -7,7 +7,7 @@
     (c-mode . eglot-ensure)
     (c++-mode . eglot-ensure)
     (python-mode . eglot-ensure))
-  :config (add-to-list 'eglot-server-programs '((c-mode c++-mode) . ("clangd" "--header-insertion=never"))))
+  :config (add-to-list 'eglot-server-programs '((c-mode c++-mode) . ("clangd" "-j=4" "--header-insertion=never"))))
 (use-package corfu
   :ensure t
   :custom

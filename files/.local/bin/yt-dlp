@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+guix shell \
+    --container \
+    --network \
+    python-yt-dlp \
+    nss-certs \
+    openssl \
+    -- \
+    yt-dlp \
+    "$@"
+
