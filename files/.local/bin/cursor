@@ -9,17 +9,22 @@ exec guix shell \
     --emulate-fhs \
     --no-cwd \
     --network \
-    --preserve='^DISPLAY$' \
+    --preserve="^DISPLAY$" \
+    --preserve='^DBUS_SESSION_BUS_ADDRESS$' \
     --expose="$XAUTHORITY" \
+    --expose=/var/run/dbus/system_bus_socket \
+    --expose=$(ls /tmp/dbus-*) \
     --expose=$HOME/.local/bin/xdg-open-hack=$HOME/.local/bin/firefox \
     --share=/dev/shm \
     --share=$HOME/.cursor \
     --share=$HOME/.config/Cursor \
     --share=$HOME/stuff/dev/_cursor \
     --share=/tmp/link.txt \
+    adwaita-icon-theme \
     bash \
     coreutils \
     cursor \
+    git \
     -- \
     /bin/bash \
     -c \
