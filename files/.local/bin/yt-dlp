@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-guix shell \
+exec guix shell \
     --container \
     --network \
     python-yt-dlp \

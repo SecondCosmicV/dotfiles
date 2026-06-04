@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+mkdir -p ~/.cursor
+mkdir -p ~/.config/Cursor
+mkdir -p ~/stuff/dev/_cursor
+touch /tmp/link.txt
+exec guix shell \
+    --container \
+    --emulate-fhs \
+    --no-cwd \
+    --network \
+    --preserve='^DISPLAY$' \
+    --expose="$XAUTHORITY" \
+    --expose=$HOME/.local/bin/xdg-open-hack=$HOME/.local/bin/firefox \
+    --share=/dev/shm \
+    --share=$HOME/.cursor \
+    --share=$HOME/.config/Cursor \
+    --share=$HOME/stuff/dev/_cursor \
+    --share=/tmp/link.txt \
+    bash \
+    coreutils \
+    cursor \
+    -- \
+    /bin/bash \
+    -c \
+    "export PATH=\$HOME/.local/bin:\$PATH && exec cursor"
+
