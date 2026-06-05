@@ -3,13 +3,13 @@
   (gnu packages cryptsetup)
   (gnu packages linux)
   (gnu services desktop)
-  (gnu services docker)
   (gnu services pm)
   (gnu services shepherd)
   (gnu services virtualization)
   (gnu services xorg)
   (nongnu packages linux)
-  (nongnu system linux-initrd))
+  (nongnu system linux-initrd)
+  (suika-chan services docker-binary))
 (define-public base-operating-system (operating-system
   (kernel linux)
   (kernel-arguments (cons
@@ -42,13 +42,12 @@
     (service xorg-server-service-type)
     (service libvirt-service-type)
     (service virtlog-service-type)
-    (service containerd-service-type)
-    (service docker-service-type)
     (service tlp-service-type (tlp-configuration
       (stop-charge-thresh-bat0 80)
       (start-charge-thresh-bat0 75)
       (ahci-runtime-pm-on-ac? #t)
       (ahci-runtime-pm-on-bat? #t)))
+    (service docker-binary-service-type)
     (simple-service 'my-base-service shepherd-root-service-type (list
       (shepherd-service
         (provision '(firewall-configurator))

@@ -42,7 +42,8 @@
   (gnu packages virtualization)
   (gnu packages wm)
   (gnu packages xdisorg)
-  (gnu packages xorg))
+  (gnu packages xorg)
+  (nongnu packages messaging))
 (home-environment
   (packages (list
     7zip
@@ -94,6 +95,7 @@
     rclone
     secrets
     setxkbmap
+    signal-desktop
     stow
     torbrowser
     ublock-origin/chromium
