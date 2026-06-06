@@ -3,6 +3,7 @@
   (gnu home services)
   (gnu home services dotfiles)
   (gnu home services fontutils)
+  (gnu home services mpv)
   (gnu home services shells)
   (gnu packages admin)
   (gnu packages browser-extensions)
@@ -43,7 +44,8 @@
   (gnu packages wm)
   (gnu packages xdisorg)
   (gnu packages xorg)
-  (nongnu packages messaging))
+  (nongnu packages messaging)
+  (suika-chan packages docker-binary))
 (home-environment
   (packages (list
     7zip
@@ -51,6 +53,7 @@
     adwaita-icon-theme
     clang
     dmenu
+    docker-compose-binary
     dragon-drop
     efibootmgr
     emacs
@@ -110,8 +113,13 @@
     xset
     (list isc-bind "utils")))
   (services (list
+    (service home-files-service-type `(
+      (".docker/cli-plugins/docker-compose" ,(symlink-to (file-append docker-compose-binary "/usr/lib/docker/cli-plugins/docker-compose")))))
     (service home-dotfiles-service-type (home-dotfiles-configuration
       (directories '("../files"))))
+    (service home-mpv-service-type (make-home-mpv-configuration
+      #:global (make-mpv-profile-configuration
+        #:loop-file 'inf)))
     (simple-service 'my-env-vars-service home-environment-variables-service-type '(
       ("PATH" . "$HOME/.local/bin:$PATH")
       ("EDITOR" . "nano")
