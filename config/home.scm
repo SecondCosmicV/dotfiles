@@ -13,6 +13,7 @@
   (gnu packages dns)
   (gnu packages education)
   (gnu packages emacs)
+  (gnu packages emacs-xyz)
   (gnu packages fonts)
   (gnu packages freedesktop)
   (gnu packages gimp)
@@ -57,6 +58,14 @@
     dragon-drop
     efibootmgr
     emacs
+    emacs-cape
+    emacs-corfu
+    emacs-dired-hacks
+    emacs-dockerfile-mode
+    emacs-magit
+    emacs-multiple-cursors
+    emacs-nord-theme
+    emacs-yaml-mode
     evince
     feh
     ffmpeg

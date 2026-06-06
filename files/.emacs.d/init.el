@@ -1,22 +1,14 @@
-(require 'package)
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-(package-initialize)
-(use-package yaml-mode :ensure t)
-(use-package dockerfile-mode :ensure t)
+(require 'dired)
 (use-package dired-subtree
-  :ensure t
-  :after dired
   :bind (
     :map dired-mode-map
     ("TAB" . dired-subtree-toggle)))
 (use-package multiple-cursors
-  :ensure t
   :bind (
     ("C-S-c C-S-c" . mc/edit-lines)
     ("C->" . mc/mark-next-like-this)
     ("C-<" . mc/mark-previous-like-this)
     ("C-c C-<" . mc/mark-all-like-this)))
-(use-package magit :ensure t)
 (menu-bar-mode -1)
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
@@ -36,7 +28,7 @@
 (setq-default truncate-lines t)
 (add-to-list 'default-frame-alist '(font . "monospace-12"))
 (add-to-list 'display-buffer-alist '("*Async Shell Command*" display-buffer-no-window (nil)))
-(load-theme 'modus-operandi)
+(load-theme 'nord t)
 (load custom-file 'noerror)
 (load (expand-file-name "indent.el" user-emacs-directory))
 (load (expand-file-name "autocomplete.el" user-emacs-directory))

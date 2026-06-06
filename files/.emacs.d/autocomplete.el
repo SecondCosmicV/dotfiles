@@ -1,5 +1,4 @@
 (use-package cape
-  :ensure t
   :init (add-to-list 'completion-at-point-functions #'cape-keyword))
 (use-package eglot
   :custom (eglot-autoshutdown t)
@@ -9,7 +8,6 @@
     (python-mode . eglot-ensure))
   :config (add-to-list 'eglot-server-programs '((c-mode c++-mode) . ("clangd" "-j=4" "--header-insertion=never"))))
 (use-package corfu
-  :ensure t
   :custom
   (corfu-auto t)
   (corfu-auto-prefix 1)
