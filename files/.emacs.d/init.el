@@ -28,10 +28,14 @@
 (setq-default truncate-lines t)
 (add-to-list 'default-frame-alist '(font . "monospace-12"))
 (add-to-list 'display-buffer-alist '("*Async Shell Command*" display-buffer-no-window (nil)))
-(load-theme 'nord t)
 (load custom-file 'noerror)
 (load (expand-file-name "indent.el" user-emacs-directory))
 (load (expand-file-name "autocomplete.el" user-emacs-directory))
 (load (expand-file-name "email.el" user-emacs-directory) 'noerror)
 (load (expand-file-name "cp-mode.el" user-emacs-directory) 'noerror)
+(if (daemonp)
+  (add-hook 'after-make-frame-functions (lambda (frame)
+    (with-selected-frame frame
+      (load-theme 'nord t))))
+  (load-theme 'nord t))
 
