@@ -5,6 +5,7 @@ mkdir -p ~/.config/Cursor
 mkdir -p ~/stuff/dev/_cursor
 touch /tmp/link.txt
 exec guix shell \
+    -r ~/stuff/roots/cursor \
     --container \
     --emulate-fhs \
     --no-cwd \
