@@ -2,6 +2,7 @@
   (gnu)
   (gnu packages cryptsetup)
   (gnu packages linux)
+  (gnu packages wm)
   (gnu services desktop)
   (gnu services pm)
   (gnu services shepherd)
@@ -40,13 +41,16 @@
     %base-packages))
   (services (cons*
     (service xorg-server-service-type)
-    (service libvirt-service-type)
-    (service virtlog-service-type)
+    (service screen-locker-service-type (screen-locker-configuration
+      (name "i3lock")
+      (program (file-append i3lock "/bin/i3lock"))))
     (service tlp-service-type (tlp-configuration
       (stop-charge-thresh-bat0 80)
       (start-charge-thresh-bat0 75)
       (ahci-runtime-pm-on-ac? #t)
       (ahci-runtime-pm-on-bat? #t)))
+    (service libvirt-service-type)
+    (service virtlog-service-type)
     (service docker-binary-service-type)
     (simple-service 'my-base-service shepherd-root-service-type (list
       (shepherd-service
