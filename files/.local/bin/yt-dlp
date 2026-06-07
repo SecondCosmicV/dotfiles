@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+rm -f ~/stuff/roots/yt-dlp
 exec guix shell \
     -r ~/stuff/roots/yt-dlp \
     --container \

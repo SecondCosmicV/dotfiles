@@ -67,6 +67,7 @@
     emacs-nord-theme
     emacs-yaml-mode
     evince
+    fastfetch
     feh
     ffmpeg
     flameshot
@@ -91,7 +92,6 @@
     lm-sensors
     lxterminal
     mpv
-    neofetch
     numlockx
     obs
     openboard

@@ -4,6 +4,7 @@ mkdir -p ~/.cursor
 mkdir -p ~/.config/Cursor
 mkdir -p ~/stuff/dev/_cursor
 touch /tmp/link.txt
+rm -f ~/stuff/roots/cursor
 exec guix shell \
     -r ~/stuff/roots/cursor \
     --container \
