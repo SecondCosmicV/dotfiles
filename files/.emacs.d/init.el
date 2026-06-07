@@ -32,11 +32,7 @@
     (let ((default-directory (dired-current-directory)))
       (apply orig-fun args))
     (apply orig-fun args))))
-(if (daemonp)
-  (add-hook 'after-make-frame-functions (lambda (frame)
-    (with-selected-frame frame
-      (load-theme 'nord t))))
-  (load-theme 'nord t))
+(load-theme 'solarized-light t)
 (load custom-file 'noerror)
 (load (expand-file-name "indent.el" user-emacs-directory))
 (load (expand-file-name "sidebar.el" user-emacs-directory))

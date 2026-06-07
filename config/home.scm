@@ -64,7 +64,7 @@
     emacs-dockerfile-mode
     emacs-magit
     emacs-multiple-cursors
-    emacs-nord-theme
+    emacs-solarized-theme
     emacs-yaml-mode
     evince
     fastfetch
