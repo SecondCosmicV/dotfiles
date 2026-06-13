@@ -11,7 +11,8 @@
   (nongnu packages linux)
   (nongnu system linux-initrd)
   (suika-chan services docker-binary))
-(define-public base-operating-system (operating-system
+(include "./hosts.scm")
+(define base-operating-system (operating-system
   (kernel linux)
   (kernel-arguments (cons
     "ipv6.disable=1"
@@ -52,6 +53,7 @@
     (service libvirt-service-type)
     (service virtlog-service-type)
     (service docker-binary-service-type)
+    (simple-service 'my-hosts-service hosts-service-type my-hosts)
     (simple-service 'my-base-service shepherd-root-service-type (list
       (shepherd-service
         (provision '(firewall-configurator))
