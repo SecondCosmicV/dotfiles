@@ -6,5 +6,5 @@ flatpak --user remote-add --if-not-exists flathub https://dl.flathub.org/repo/fl
 flatpak install flathub com.discordapp.Discord
 flatpak install flathub com.spotify.Client
 cd ~/stuff/secrets
-stow -R -t ~ .
+stow -R -v -t ~ .
 

@@ -53,6 +53,13 @@
     (service libvirt-service-type)
     (service virtlog-service-type)
     (service docker-binary-service-type)
+    (udev-rules-service 'display-thing (udev-rule
+      "90-display-thing.rules"
+      (string-append
+        "ACTION==\"change\","
+        "SUBSYSTEM==\"drm\","
+        "ENV{HOTPLUG}==\"1\","
+        "RUN+=\"/bin/sh -c 'kill -USR1 $$(/run/current-system/profile/bin/cat /tmp/monman.pid)'\"")))
     (simple-service 'my-hosts-service hosts-service-type my-hosts)
     (simple-service 'my-base-service shepherd-root-service-type (list
       (shepherd-service

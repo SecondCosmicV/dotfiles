@@ -123,9 +123,9 @@ def refresh(i):
             module.update()
     sys.stdout.write(' | '.join(map(lambda x:'{}: {}'.format(x[1],x[0].display),modules))+'\n')
     sys.stdout.flush()
+signal.signal(signal.SIGUSR1,lambda signum,stack:refresh(0))
 with open('/tmp/status.pid','w') as f:
     f.write(str(os.getpid()))
-signal.signal(signal.SIGUSR1,lambda signum,stack:refresh(0))
 i=0
 while True:
     with suppress(Exception):
