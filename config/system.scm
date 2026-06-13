@@ -14,8 +14,9 @@
 (include "./hosts.scm")
 (define base-operating-system (operating-system
   (kernel linux)
-  (kernel-arguments (cons
+  (kernel-arguments (cons*
     "ipv6.disable=1"
+    "modprobe.blacklist=pcspkr"
     %default-kernel-arguments))
   (initrd microcode-initrd)
   (locale "de_DE.utf8")
