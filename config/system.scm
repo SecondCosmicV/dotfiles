@@ -60,8 +60,17 @@
         "ACTION==\"change\","
         "SUBSYSTEM==\"drm\","
         "ENV{HOTPLUG}==\"1\","
-        "RUN+=\"/bin/sh -c 'kill -USR1 $$(/run/current-system/profile/bin/cat /tmp/monman.pid)'\"")))
+        "RUN+=\"/bin/sh -c 'kill -USR1 $$(/run/current-system/profile/bin/cat /tmp/monman.pid)'\"\n")))
     (simple-service 'my-hosts-service hosts-service-type my-hosts)
+    (simple-service 'libvirt-network-conf activation-service-type
+      #~(begin
+        (mkdir-p "/etc/libvirt")
+        (call-with-output-file
+          "/etc/libvirt/network.conf"
+          (lambda (port)
+            (display
+              "firewall_backend = \"iptables\"\n"
+              port)))))
     (simple-service 'my-base-service shepherd-root-service-type (list
       (shepherd-service
         (provision '(firewall-configurator))
