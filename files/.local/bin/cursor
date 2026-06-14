@@ -28,7 +28,7 @@ exec guix shell \
     cursor \
     git \
     -- \
-    /bin/bash \
+    bash \
     -c \
-    "export PATH=\$HOME/.local/bin:\$PATH && exec cursor"
+    "export PATH=\"\$HOME/.local/bin:\$PATH\" && exec cursor"
 
