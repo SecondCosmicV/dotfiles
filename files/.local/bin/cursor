@@ -4,9 +4,8 @@ mkdir -p ~/.cursor
 mkdir -p ~/.config/Cursor
 mkdir -p ~/stuff/dev/_cursor
 touch /tmp/link.txt
-rm -f ~/stuff/roots/cursor
 exec guix shell \
-    -r ~/stuff/roots/cursor \
+    -p ~/stuff/roots/cursor \
     --container \
     --emulate-fhs \
     --no-cwd \
@@ -22,11 +21,6 @@ exec guix shell \
     --share=$HOME/.config/Cursor \
     --share=$HOME/stuff/dev/_cursor \
     --share=/tmp/link.txt \
-    adwaita-icon-theme \
-    bash \
-    coreutils \
-    cursor \
-    git \
     -- \
     bash \
     -c \
