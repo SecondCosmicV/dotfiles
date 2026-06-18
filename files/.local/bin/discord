@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+exec guix shell \
+    -p ~/stuff/roots/discord \
+    --container \
+    --emulate-fhs \
+    --no-cwd \
+    --network \
+    --preserve="^DISPLAY$" \
+    --expose=$XAUTHORITY \
+    --share=/dev/shm \
+    --share=$HOME/.config/discord \
+    -- \
+    discord
+

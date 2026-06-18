@@ -8,7 +8,6 @@ exec --no-startup-id monman
 exec --no-startup-id feh --bg-fill ./stuff/wallps/wallp.png
 exec --no-startup-id ~/.guix-home/profile/libexec/polkit-gnome-authentication-agent-1
 exec --no-startup-id emacs --daemon
-exec --no-startup-id virsh -c qemu:///system net-start default
 set $refresh_status kill -USR1 $(cat /tmp/status.pid)
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_status
 bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_status
@@ -80,7 +79,7 @@ bindsym $mod+b exec --no-startup-id icecat
 bindsym $mod+Shift+b exec --no-startup-id chromium
 bindsym $mod+k exec --no-startup-id secrets
 bindsym $mod+i exec --no-startup-id signal-desktop
-bindsym $mod+Shift+i exec --no-startup-id flatpak run com.discordapp.Discord
+bindsym $mod+Shift+i exec --no-startup-id discord
 bindsym $mod+a exec --no-startup-id spotify
 bar {
     status_command status

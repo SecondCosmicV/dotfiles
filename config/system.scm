@@ -6,7 +6,6 @@
   (gnu services desktop)
   (gnu services pm)
   (gnu services shepherd)
-  (gnu services virtualization)
   (gnu services xorg)
   (nongnu packages linux)
   (nongnu system linux-initrd)
@@ -31,7 +30,6 @@
         "audio"
         "docker"
         "kvm"
-        "libvirt"
         "netdev"
         "video"
         "wheel")))
@@ -51,8 +49,6 @@
       (start-charge-thresh-bat0 75)
       (ahci-runtime-pm-on-ac? #t)
       (ahci-runtime-pm-on-bat? #t)))
-    (service libvirt-service-type)
-    (service virtlog-service-type)
     (service docker-binary-service-type)
     (udev-rules-service 'display-thing (udev-rule
       "90-display-thing.rules"

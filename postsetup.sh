@@ -1,21 +1,26 @@
 #!/usr/bin/env bash
 
-set -x
+set -ex
 dconf write /org/gtk/settings/file-chooser/show-hidden true
-flatpak --user remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
-flatpak install flathub com.discordapp.Discord
+dconf write /org/virt-manager/virt-manager/xmleditor-enabled true
+dconf write /org/virt-manager/virt-manager/connections/uris "['qemu:///session']"
+dconf write /org/virt-manager/virt-manager/connections/autoconnect "['qemu:///session']"
 cd ~/stuff/secrets
 stow -R -v -t ~ .
 mkdir -p ~/stuff/roots
 rm -f ~/stuff/roots/yt-dlp
-guix shell -r ~/stuff/roots/yt-dlp \
+guix shell \
+    -r ~/stuff/roots/yt-dlp \
     nss-certs \
     openssl \
     python-yt-dlp \
     -- \
     true
 rm -f ~/stuff/roots/cursor
-guix shell -r ~/stuff/roots/cursor --container --emulate-fhs \
+guix shell \
+    -r ~/stuff/roots/cursor \
+    --container \
+    --emulate-fhs \
     adwaita-icon-theme \
     bash \
     coreutils \
@@ -23,8 +28,27 @@ guix shell -r ~/stuff/roots/cursor --container --emulate-fhs \
     git \
     -- \
     true
+rm -f ~/stuff/roots/discord
+mkdir -p ~/.config/discord
+guix shell \
+    -r ~/stuff/roots/discord \
+    --container \
+    --emulate-fhs \
+    --network \
+    --share=$HOME/.config/discord \
+    adwaita-icon-theme \
+    discord \
+    -- \
+    updater_bootstrap \
+    --no-zenity \
+    $HOME/.config/discord \
+    stable \
+    "https://updates.discord.com/"
 rm -f ~/stuff/roots/spotify
-guix shell -r ~/stuff/roots/spotify --container --emulate-fhs \
+guix shell \
+    -r ~/stuff/roots/spotify \
+    --container \
+    --emulate-fhs \
     adwaita-icon-theme \
     coreutils \
     font-dejavu \

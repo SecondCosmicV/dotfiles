@@ -53,6 +53,7 @@
     acpi
     adwaita-icon-theme
     clang
+    dconf
     dmenu
     docker-compose-binary
     dragon-drop
@@ -71,7 +72,6 @@
     feh
     ffmpeg
     flameshot
-    flatpak
     font-dejavu
     font-google-noto
     font-google-noto-emoji
@@ -89,6 +89,7 @@
     imagemagick
     inkscape
     libreoffice
+    libvirt
     lm-sensors
     lxterminal
     mpv
@@ -103,6 +104,7 @@
     pulseaudio
     python
     python-lsp-server
+    qemu
     qemu
     rclone
     secrets
