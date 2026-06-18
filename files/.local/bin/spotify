@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+mkdir -p ~/.config/spotify
+mkdir -p ~/.cache/spotify
+exec guix shell \
+    -p ~/stuff/roots/spotify \
+    --container \
+    --emulate-fhs \
+    --no-cwd \
+    --network \
+    --preserve="^DISPLAY$" \
+    --preserve="^DBUS_SESSION_BUS_ADDRESS$" \
+    --preserve="^XDG_RUNTIME_DIR$" \
+    --expose=$XAUTHORITY \
+    --expose=$XDG_RUNTIME_DIR/pulse \
+    --expose=/var/run/dbus/system_bus_socket \
+    --expose=$(ls /tmp/dbus-*) \
+    --share=/dev/shm \
+    --share=$HOME/.config/spotify \
+    --share=$HOME/.cache/spotify \
+    -- \
+    spotify \
+    --audio-api=pulseaudio
+

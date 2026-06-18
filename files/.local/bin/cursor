@@ -11,8 +11,8 @@ exec guix shell \
     --no-cwd \
     --network \
     --preserve="^DISPLAY$" \
-    --preserve='^DBUS_SESSION_BUS_ADDRESS$' \
-    --expose="$XAUTHORITY" \
+    --preserve="^DBUS_SESSION_BUS_ADDRESS$" \
+    --expose=$XAUTHORITY \
     --expose=/var/run/dbus/system_bus_socket \
     --expose=$(ls /tmp/dbus-*) \
     --expose=$HOME/.local/bin/xdg-open-hack=$HOME/.local/bin/firefox \

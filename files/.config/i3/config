@@ -81,7 +81,7 @@ bindsym $mod+Shift+b exec --no-startup-id chromium
 bindsym $mod+k exec --no-startup-id secrets
 bindsym $mod+i exec --no-startup-id signal-desktop
 bindsym $mod+Shift+i exec --no-startup-id flatpak run com.discordapp.Discord
-bindsym $mod+a exec --no-startup-id flatpak run com.spotify.Client --audio-api=pulseaudio
+bindsym $mod+a exec --no-startup-id spotify
 bar {
     status_command status
 }
