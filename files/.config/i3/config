@@ -8,6 +8,7 @@ exec --no-startup-id monman
 exec --no-startup-id feh --bg-fill ./stuff/wallps/wallp.png
 exec --no-startup-id ~/.guix-home/profile/libexec/polkit-gnome-authentication-agent-1
 exec --no-startup-id emacs --daemon
+exec --no-startup-id virsh -c qemu:///system net-start default
 set $refresh_status kill -USR1 $(cat /tmp/status.pid)
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_status
 bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_status

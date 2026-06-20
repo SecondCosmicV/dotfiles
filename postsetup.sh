@@ -3,8 +3,6 @@
 set -ex
 dconf write /org/gtk/settings/file-chooser/show-hidden true
 dconf write /org/virt-manager/virt-manager/xmleditor-enabled true
-dconf write /org/virt-manager/virt-manager/connections/uris "['qemu:///session']"
-dconf write /org/virt-manager/virt-manager/connections/autoconnect "['qemu:///session']"
 cd ~/stuff/secrets
 stow -R -v -t ~ .
 mkdir -p ~/stuff/roots

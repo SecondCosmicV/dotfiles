@@ -38,6 +38,7 @@
   (gnu packages ssh)
   (gnu packages suckless)
   (gnu packages sync)
+  (gnu packages tmux)
   (gnu packages tor-browsers)
   (gnu packages version-control)
   (gnu packages video)
@@ -89,10 +90,10 @@
     imagemagick
     inkscape
     libreoffice
-    libvirt
     lm-sensors
     lxterminal
     mpv
+    ntfs-3g
     numlockx
     obs
     openboard
@@ -104,13 +105,12 @@
     pulseaudio
     python
     python-lsp-server
-    qemu
-    qemu
     rclone
     secrets
     setxkbmap
     signal-desktop
     stow
+    tmux
     torbrowser
     ublock-origin/chromium
     ungoogled-chromium
@@ -118,7 +118,6 @@
     xclip
     xdg-desktop-portal-gtk
     xdg-utils
-    xinit
     xrandr
     xrdb
     xset

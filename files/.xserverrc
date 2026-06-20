@@ -1,2 +1,0 @@
-exec Xorg -nolisten tcp "$@" vt$XDG_VTNR
-

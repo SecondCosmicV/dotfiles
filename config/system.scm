@@ -6,6 +6,7 @@
   (gnu services desktop)
   (gnu services pm)
   (gnu services shepherd)
+  (gnu services virtualization)
   (gnu services xorg)
   (nongnu packages linux)
   (nongnu system linux-initrd)
@@ -30,6 +31,7 @@
         "audio"
         "docker"
         "kvm"
+        "libvirt"
         "netdev"
         "video"
         "wheel")))
@@ -40,7 +42,7 @@
     iptables
     %base-packages))
   (services (cons*
-    (service xorg-server-service-type)
+    (service startx-command-service-type)
     (service screen-locker-service-type (screen-locker-configuration
       (name "i3lock")
       (program (file-append i3lock "/bin/i3lock"))))
@@ -49,6 +51,8 @@
       (start-charge-thresh-bat0 75)
       (ahci-runtime-pm-on-ac? #t)
       (ahci-runtime-pm-on-bat? #t)))
+    (service libvirt-service-type)
+    (service virtlog-service-type)
     (service docker-binary-service-type)
     (udev-rules-service 'display-thing (udev-rule
       "90-display-thing.rules"
@@ -60,13 +64,13 @@
     (simple-service 'my-hosts-service hosts-service-type my-hosts)
     (simple-service 'libvirt-network-conf activation-service-type
       #~(begin
-        (mkdir-p "/etc/libvirt")
-        (call-with-output-file
-          "/etc/libvirt/network.conf"
-          (lambda (port)
-            (display
-              "firewall_backend = \"iptables\"\n"
-              port)))))
+          (mkdir-p "/etc/libvirt")
+          (call-with-output-file
+            "/etc/libvirt/network.conf"
+            (lambda (port)
+              (display
+                "firewall_backend = \"iptables\"\n"
+                port)))))
     (simple-service 'my-base-service shepherd-root-service-type (list
       (shepherd-service
         (provision '(firewall-configurator))
