@@ -87,8 +87,9 @@ esac
         (label "Win10 (VM)")
         (linux (operating-system-kernel-file plt326-operating-system))
         (initrd (operating-system-initrd-file plt326-operating-system))
-        (linux-arguments (cons
+        (linux-arguments (cons*
           "modprobe.blacklist=amdgpu"
+          "modprobe.blacklist=rtw89_8852be"
           (operating-system-kernel-arguments
             plt326-operating-system
             (file-system-device (operating-system-root-file-system plt326-operating-system)))))))))))
