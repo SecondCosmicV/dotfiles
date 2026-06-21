@@ -78,12 +78,12 @@
         (start #~(lambda ()
           (system (string-append
             "PATH=\"/run/current-system/profile/sbin\" && "
-            "iptables -n -P FORWARD DROP && "
-            "iptables -n -P INPUT DROP && "
-            "iptables -n -A INPUT -p udp -s localhost -j ACCEPT && "
-            "iptables -n -A INPUT -p tcp -s localhost -j ACCEPT && "
-            "iptables -n -A INPUT -p icmp -s localhost -j ACCEPT && "
-            "iptables -n -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT"))
+            "iptables -P FORWARD DROP && "
+            "iptables -P INPUT DROP && "
+            "iptables -A INPUT -p udp -s localhost -j ACCEPT && "
+            "iptables -A INPUT -p tcp -s localhost -j ACCEPT && "
+            "iptables -A INPUT -p icmp -s localhost -j ACCEPT && "
+            "iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT"))
           #t)))
       (shepherd-service
         (provision '(brightness-setter))

@@ -51,6 +51,7 @@ esac
         (provision '(vm-autostarter))
         (requirement '(
           libvirtd
+          udev
           virtlogd))
         (one-shot? #t)
         (start #~(lambda ()
