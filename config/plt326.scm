@@ -35,7 +35,9 @@ source $GUIX_PROFILE/etc/profile
 case \"$2\" in
     prepare)
         nohup provide-virtual-touchpad > /dev/null 2>&1 &
-        sleep 3
+        while [ ! -e /dev/input/virtual-touchpad ]; do
+            sleep 1
+        done
         ;;
     release)
       halt
@@ -48,16 +50,15 @@ esac
       (shepherd-service
         (provision '(vm-autostarter))
         (requirement '(
-          dbus-system
           libvirtd
-          networking
-          user-processes
           virtlogd))
         (one-shot? #t)
         (start #~(lambda ()
           (system (string-append
-            "export PATH=\"/run/current-system/profile/bin\" && "
-            "grep -w \"modprobe.blacklist=amdgpu\" /proc/cmdline && virsh start win10"))
+            "PATH=\"/run/current-system/profile/bin\" && "
+            "grep -w \"modprobe.blacklist=amdgpu\" /proc/cmdline && "
+            "while ! virsh list; do sleep 1; done && "
+            "virsh start win10"))
           #t)))))
     (operating-system-user-services base-operating-system)))
   (mapped-devices (list
