@@ -15,14 +15,11 @@ exec guix shell \
     --expose=$XAUTHORITY \
     --expose=/var/run/dbus/system_bus_socket \
     --expose=$(ls /tmp/dbus-*) \
-    --expose=$HOME/.local/bin/xdg-open-hack=$HOME/.local/bin/firefox \
     --share=/dev/shm \
     --share=$HOME/.cursor \
     --share=$HOME/.config/Cursor \
     --share=$HOME/stuff/dev/_cursor \
     --share=/tmp/link.txt \
     -- \
-    bash \
-    -c \
-    "export PATH=\"\$HOME/.local/bin:\$PATH\" && exec cursor"
+    cursor
 

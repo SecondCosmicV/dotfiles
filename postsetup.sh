@@ -20,10 +20,10 @@ guix shell \
     --container \
     --emulate-fhs \
     adwaita-icon-theme \
-    bash \
     coreutils \
     cursor \
     git \
+    xdg-open-hack \
     -- \
     true
 rm -f ~/stuff/roots/discord
