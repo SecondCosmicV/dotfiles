@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -ex
+set -xe
 dconf write /org/gtk/settings/file-chooser/show-hidden true
 dconf write /org/virt-manager/virt-manager/xmleditor-enabled true
 cd ~/stuff/secrets

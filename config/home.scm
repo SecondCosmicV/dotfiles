@@ -19,6 +19,7 @@
   (gnu packages gimp)
   (gnu packages gnome)
   (gnu packages gnome-circle)
+  (gnu packages gnupg)
   (gnu packages gnuzilla)
   (gnu packages gtk)
   (gnu packages image)
@@ -82,6 +83,7 @@
     gimp
     git
     gnu-make
+    gnupg
     hicolor-icon-theme
     htop
     i3-wm
