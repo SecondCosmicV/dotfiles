@@ -102,6 +102,7 @@
     openssh
     perl-image-exiftool
     pigz
+    pinentry
     polkit-gnome
     powertop
     pulseaudio
