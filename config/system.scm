@@ -55,7 +55,7 @@
     (service virtlog-service-type)
     (service docker-binary-service-type)
     (udev-rules-service 'display-thing (udev-rule
-      "90-display-thing.rules"
+      "99-display-thing.rules"
       (string-append
         "ACTION==\"change\","
         "SUBSYSTEM==\"drm\","
@@ -96,10 +96,6 @@
             "20%")
           #t)))))
     (modify-services %desktop-services
-      (elogind-service-type config => (elogind-configuration
-        (inherit config)
-        (handle-lid-switch 'ignore)
-        (handle-lid-switch-external-power 'ignore)))
       (delete gdm-service-type))))
   (bootloader (bootloader-configuration
     (bootloader grub-efi-bootloader)

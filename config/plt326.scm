@@ -16,7 +16,7 @@
     (operating-system-packages base-operating-system)))
   (services (cons*
     (udev-rules-service 'touchpad-thing (udev-rule
-      "90-touchpad-thing.rules"
+      "99-touchpad-thing.rules"
       (string-append
         "SUBSYSTEM==\"input\","
         "ENV{ID_INPUT_TOUCHPAD}==\"1\","
@@ -34,6 +34,7 @@ GUIX_PROFILE=/run/current-system
 source $GUIX_PROFILE/etc/profile
 case \"$2\" in
     prepare)
+        nohup elogind-inhibit --what=handle-lid-switch sleep infinity > /dev/null 2>&1 &
         nohup provide-virtual-touchpad > /dev/null 2>&1 &
         while [ ! -e /dev/input/virtual-touchpad ]; do
             sleep 1
