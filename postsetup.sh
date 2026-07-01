@@ -9,9 +9,22 @@ mkdir -p ~/stuff/roots
 rm -f ~/stuff/roots/yt-dlp
 guix shell \
     -r ~/stuff/roots/yt-dlp \
+    --container \
+    --no-cwd \
+    coreutils \
     nss-certs \
     openssl \
     python-yt-dlp \
+    -- \
+    true
+rm -f ~/stuff/roots/eigenwallet
+guix shell \
+    -r ~/stuff/roots/eigenwallet \
+    --container \
+    --emulate-fhs \
+    --no-cwd \
+    coreutils \
+    eigenwallet \
     -- \
     true
 rm -f ~/stuff/roots/cursor
@@ -32,6 +45,7 @@ guix shell \
     -r ~/stuff/roots/discord \
     --container \
     --emulate-fhs \
+    --no-cwd \
     --network \
     --share=$HOME/.config/discord \
     adwaita-icon-theme \
@@ -47,6 +61,7 @@ guix shell \
     -r ~/stuff/roots/spotify \
     --container \
     --emulate-fhs \
+    --no-cwd \
     adwaita-icon-theme \
     coreutils \
     font-dejavu \

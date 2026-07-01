@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+mkdir -p ~/.local/share/eigenwallet
+mkdir -p ~/.local/share/net.unstoppableswap.gui
+mkdir -p ~/.local/share/xmr-btc-swap
+exec guix shell \
+    -p ~/stuff/roots/eigenwallet \
+    --container \
+    --emulate-fhs \
+    --no-cwd \
+    --network \
+    --preserve="^DISPLAY$" \
+    --expose=$XAUTHORITY \
+    --share=/dev/shm \
+    --share=$HOME/.local/share/eigenwallet \
+    --share=$HOME/.local/share/net.unstoppableswap.gui \
+    --share=$HOME/.local/share/xmr-btc-swap \
+    -- \
+    unstoppableswap-gui-rs
+
