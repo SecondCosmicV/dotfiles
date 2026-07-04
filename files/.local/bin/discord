@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 
-exec guix shell \
-    -p ~/stuff/roots/discord \
+exec guix time-machine \
+    --channels=$HOME/.config/guix/channels.pinned.scm \
+    -- \
+    shell \
     --container \
     --emulate-fhs \
     --no-cwd \
@@ -10,6 +12,7 @@ exec guix shell \
     --expose=$XAUTHORITY \
     --share=/dev/shm \
     --share=$HOME/.config/discord \
+    --manifest=$HOME/.local/share/manifests/discord.scm \
     -- \
     discord
 

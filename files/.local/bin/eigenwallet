@@ -3,8 +3,10 @@
 mkdir -p ~/.local/share/eigenwallet
 mkdir -p ~/.local/share/net.unstoppableswap.gui
 mkdir -p ~/.local/share/xmr-btc-swap
-exec guix shell \
-    -p ~/stuff/roots/eigenwallet \
+exec guix time-machine \
+    --channels=$HOME/.config/guix/channels.pinned.scm \
+    -- \
+    shell \
     --container \
     --emulate-fhs \
     --no-cwd \
@@ -15,6 +17,7 @@ exec guix shell \
     --share=$HOME/.local/share/eigenwallet \
     --share=$HOME/.local/share/net.unstoppableswap.gui \
     --share=$HOME/.local/share/xmr-btc-swap \
+    --manifest=$HOME/.local/share/manifests/eigenwallet.scm \
     -- \
     unstoppableswap-gui-rs
 

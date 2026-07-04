@@ -2,8 +2,10 @@
 
 mkdir -p ~/.config/spotify
 mkdir -p ~/.cache/spotify
-exec guix shell \
-    -p ~/stuff/roots/spotify \
+exec guix time-machine \
+    --channels=$HOME/.config/guix/channels.pinned.scm \
+    -- \
+    shell \
     --container \
     --emulate-fhs \
     --no-cwd \
@@ -18,6 +20,7 @@ exec guix shell \
     --share=/dev/shm \
     --share=$HOME/.config/spotify \
     --share=$HOME/.cache/spotify \
+    --manifest=$HOME/.local/share/manifests/spotify.scm \
     -- \
     spotify \
     --audio-api=pulseaudio

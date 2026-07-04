@@ -1,9 +1,12 @@
 #!/usr/bin/env bash
 
-exec guix shell \
-    -p ~/stuff/roots/yt-dlp \
+exec guix time-machine \
+    --channels=$HOME/.config/guix/channels.pinned.scm \
+    -- \
+    shell \
     --container \
     --network \
+    --manifest=$HOME/.local/share/manifests/yt-dlp.scm \
     -- \
     yt-dlp \
     "$@"

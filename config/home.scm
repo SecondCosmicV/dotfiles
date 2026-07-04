@@ -28,9 +28,11 @@
   (gnu packages inkscape)
   (gnu packages libreoffice)
   (gnu packages linux)
+  (gnu packages lisp)
   (gnu packages llvm)
   (gnu packages lxde)
   (gnu packages package-management)
+  (gnu packages pdf)
   (gnu packages photo)
   (gnu packages polkit)
   (gnu packages pulseaudio)
@@ -104,11 +106,13 @@
     pigz
     pinentry
     polkit-gnome
+    poppler
     powertop
     pulseaudio
     python
     python-lsp-server
     rclone
+    sbcl
     secrets
     setxkbmap
     signal-desktop

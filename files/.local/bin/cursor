@@ -4,8 +4,10 @@ mkdir -p ~/.cursor
 mkdir -p ~/.config/Cursor
 mkdir -p ~/stuff/dev/_cursor
 touch /tmp/link.txt
-exec guix shell \
-    -p ~/stuff/roots/cursor \
+exec guix time-machine \
+    --channels=$HOME/.config/guix/channels.pinned.scm \
+    -- \
+    shell \
     --container \
     --emulate-fhs \
     --no-cwd \
@@ -20,6 +22,7 @@ exec guix shell \
     --share=$HOME/.config/Cursor \
     --share=$HOME/stuff/dev/_cursor \
     --share=/tmp/link.txt \
+    --manifest=$HOME/.local/share/manifests/cursor.scm \
     -- \
     cursor
 
