@@ -61,6 +61,8 @@
         "SUBSYSTEM==\"drm\","
         "ENV{HOTPLUG}==\"1\","
         "RUN+=\"/bin/sh -c 'kill -USR1 $$(/run/current-system/profile/bin/cat /tmp/monman.pid)'\"\n")))
+    (simple-service 'my-etc-service etc-service-type `(
+      ("resolv.conf" ,(plain-file "resolv.conf" "nameserver 9.9.9.9\n"))))
     (simple-service 'my-hosts-service hosts-service-type my-hosts)
     (simple-service 'libvirt-network-conf activation-service-type
       #~(begin
