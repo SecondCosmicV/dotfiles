@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import math
 import os
 import sys
 from subprocess import PIPE,Popen
@@ -6,6 +7,19 @@ import signal
 from time import time,sleep
 from datetime import datetime
 from contextlib import suppress
+def human(n):
+    u=' KMGT'
+    N=-1
+    while n>=1000:
+        u=u[1:]
+        N=n//100
+        n//=1000
+    u=u[0]
+    s=str(n)
+    if n<10 and N>-1:
+        s+=','+str(N%10)
+    s+=u+' '*(3-len(s))
+    return s
 class NetModule:
     def __init__(self):
         self.interf=next(filter(lambda x:x[1]=='wifi',map(
@@ -21,10 +35,10 @@ class NetModule:
             with open(f'/sys/class/net/{self.interf}/statistics/{x}x_bytes','r') as f:
                 self.curr_bytes[i]=int(f.read())
         self.curr_upd_ts=time()
-        self.display='v{:.3e} ^{:.3e}'.format(*map(
+        self.display='v{} ^{}'.format(*map(human,map(math.ceil,map(
             lambda x:(self.curr_bytes[x]-prev_bytes[x])/(self.curr_upd_ts-prev_upd_ts),
             range(2),
-        ))
+        ))))
 class DiskModule:
     def __init__(self):
         self.device=Popen('lsblk -slno NAME $(df -h --output=source ~/stuff | tail -n 1) | tail -n 1',shell=True,stdout=PIPE).stdout.read().decode().strip()
@@ -39,10 +53,10 @@ class DiskModule:
             diskstats=next(filter(lambda x:x[2]==self.device,map(lambda x:x.split(),f)))
         self.curr_sectors=(int(diskstats[5]),int(diskstats[9]))
         self.curr_upd_ts=time()
-        self.display='v{:.3e} ^{:.3e}'.format(*map(
+        self.display='v{} ^{}'.format(*map(human,map(math.ceil,map(
             lambda x:(self.curr_sectors[x]-prev_sectors[x])*self.bytes_per_sector/(self.curr_upd_ts-prev_upd_ts),
             range(2),
-        ))
+        ))))
 class PulseModule:
     def __init__(self,typ):
         self.typ=typ
