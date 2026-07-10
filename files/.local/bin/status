@@ -14,11 +14,11 @@ def human(n):
         u=u[1:]
         N=n//100
         n//=1000
-    u=u[0]
+    u=u[0].strip()
     s=str(n)
     if n<10 and N>-1:
         s+=','+str(N%10)
-    s+=u+' '*(3-len(s))
+    s+=u
     return s
 class NetModule:
     def __init__(self):

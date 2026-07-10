@@ -4,6 +4,7 @@
   "coreutils"
   "cursor"
   "git"
+  "python"
   "xdg-open-hack"
 ))
 
