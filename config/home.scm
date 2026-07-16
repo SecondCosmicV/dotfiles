@@ -50,6 +50,7 @@
   (gnu packages xdisorg)
   (gnu packages xorg)
   (nongnu packages messaging)
+  (nongnu packages mozilla)
   (suika-chan packages docker-binary))
 (home-environment
   (packages (list
@@ -75,6 +76,7 @@
     fastfetch
     feh
     ffmpeg
+    firefox-esr
     flameshot
     font-dejavu
     font-google-noto
@@ -89,7 +91,7 @@
     hicolor-icon-theme
     htop
     i3-wm
-    icecat
+    icedove
     iftop
     imagemagick
     inkscape

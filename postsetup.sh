@@ -5,6 +5,10 @@ dconf write /org/gtk/settings/file-chooser/show-hidden true
 dconf write /org/virt-manager/virt-manager/xmleditor-enabled true
 cd ~/stuff/secrets
 stow -R -v -t ~ .
+cd -
+for X in normal webapps; do
+    install -m644 user.$X.js $(realpath ~/.mozilla/firefox/*.$X)/user.js ||:
+done
 mkdir -p ~/stuff/channels
 guix time-machine --channels=<(guix describe -f channels)
 guix shell \

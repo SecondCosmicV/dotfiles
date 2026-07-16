@@ -39,6 +39,5 @@
 (load (expand-file-name "indent.el" user-emacs-directory))
 (load (expand-file-name "sidebar.el" user-emacs-directory))
 (load (expand-file-name "autocomplete.el" user-emacs-directory))
-(load (expand-file-name "email.el" user-emacs-directory) 'noerror)
 (load (expand-file-name "cp-mode.el" user-emacs-directory) 'noerror)
 
