@@ -19,6 +19,12 @@ guix shell \
     true
 guix shell \
     --container \
+    --no-cwd \
+    --manifest=$HOME/.local/share/manifests/modal.scm \
+    -- \
+    true
+guix shell \
+    --container \
     --emulate-fhs \
     --no-cwd \
     --manifest=$HOME/.local/share/manifests/eigenwallet.scm \

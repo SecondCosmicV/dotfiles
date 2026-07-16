@@ -29,6 +29,7 @@
   (gnu packages libreoffice)
   (gnu packages linux)
   (gnu packages lisp)
+  (gnu packages lisp-xyz)
   (gnu packages llvm)
   (gnu packages lxde)
   (gnu packages package-management)
@@ -115,6 +116,8 @@
     python-lsp-server
     rclone
     sbcl
+    sbcl-cl-ppcre
+    sbcl-local-time
     secrets
     setxkbmap
     signal-desktop

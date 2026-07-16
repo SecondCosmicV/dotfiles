@@ -110,6 +110,7 @@
     json-mode-hook
     latex-mode-hook
     lisp-interaction-mode-hook
+    lisp-mode-hook
     mhtml-mode-hook
     python-mode-hook
     scheme-mode-hook
@@ -136,6 +137,7 @@
     js-mode-hook
     json-mode-hook
     lisp-interaction-mode-hook
+    lisp-mode-hook
     scheme-mode-hook
     yaml-mode-hook))
   (add-hook hook (lambda () (my-indent--detect-indent 2))))

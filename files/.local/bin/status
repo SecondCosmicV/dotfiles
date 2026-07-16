@@ -1,149 +1,284 @@
-#!/usr/bin/env python3
-import math
-import os
-import sys
-from subprocess import PIPE,Popen
-import signal
-from time import time,sleep
-from datetime import datetime
-from contextlib import suppress
-def human(n):
-    u=' KMGTPE'
-    N=-1
-    while n>=1000:
-        u=u[1:]
-        N=n//100
-        n//=1000
-    u=u[0].strip()
-    s=str(n)
-    if n<10 and N>-1:
-        s+=','+str(N%10)
-    s+=u
-    return s
-class NetModule:
-    def __init__(self):
-        self.interf=next(filter(lambda x:x[1]=='wifi',map(
-            lambda x:x.strip().split(':'),
-            Popen(['nmcli','-t','-f','DEVICE,TYPE','device'],stdout=PIPE).stdout.read().decode().splitlines(),
-        )))[0]
-        self.curr_bytes=[0,0]
-        self.curr_upd_ts=0
-    def update(self):
-        prev_bytes=tuple(self.curr_bytes)
-        prev_upd_ts=self.curr_upd_ts
-        for i,x in enumerate('rt'):
-            with open(f'/sys/class/net/{self.interf}/statistics/{x}x_bytes','r') as f:
-                self.curr_bytes[i]=int(f.read())
-        self.curr_upd_ts=time()
-        self.display='v{}bps ^{}bps'.format(*map(human,map(math.ceil,map(
-            lambda x:8*(self.curr_bytes[x]-prev_bytes[x])/(self.curr_upd_ts-prev_upd_ts),
-            range(2),
-        ))))
-class DiskModule:
-    def __init__(self):
-        self.device=Popen('lsblk -slno NAME $(df -h --output=source ~/stuff | tail -n 1) | tail -n 1',shell=True,stdout=PIPE).stdout.read().decode().strip()
-        with open(f'/sys/block/{self.device}/queue/hw_sector_size','r') as f:
-            self.bytes_per_sector=int(f.read())
-        self.curr_sectors=(0,0)
-        self.curr_upd_ts=0
-    def update(self):
-        prev_sectors=self.curr_sectors
-        prev_upd_ts=self.curr_upd_ts
-        with open('/proc/diskstats','r') as f:
-            diskstats=next(filter(lambda x:x[2]==self.device,map(lambda x:x.split(),f)))
-        self.curr_sectors=(int(diskstats[5]),int(diskstats[9]))
-        self.curr_upd_ts=time()
-        self.display='v{}bps ^{}bps'.format(*map(human,map(math.ceil,map(
-            lambda x:8*(self.curr_sectors[x]-prev_sectors[x])*self.bytes_per_sector/(self.curr_upd_ts-prev_upd_ts),
-            range(2),
-        ))))
-class PulseModule:
-    def __init__(self,typ):
-        self.typ=typ
-    def update(self):
-        outs=[Popen([
-            'pactl',
-            f'get-{self.typ}-{x}',
-            '@DEFAULT_{}@'.format(self.typ.upper())
-        ],stdout=PIPE).stdout.read().decode() for x in ['volume','mute']]
-        self.display=''.join([
-            outs[0].split()[4][:-1],
-            'u' if 'nein' in outs[1] else 'm',
-        ])
-class BrightnessModule:
-    def __init__(self):
-        pass
-    def update(self):
-        self.display=Popen(['brightnessctl'],stdout=PIPE).stdout.read().decode().splitlines()[1].strip().split()[3][1:-2]
-class TemperatureModule:
-    def __init__(self):
-        pass
-    def update(self):
-        self.display=str(int(float(next(filter(lambda x:x[0]=='CPU:',map(lambda x:x.split(),next(filter(
-            lambda x:x.startswith('thinkpad-isa-0000'),
-            Popen(['sensors'],stdout=PIPE).stdout.read().decode().split('\n\n'),
-        )).splitlines())))[1][:-2])))
-class CPUModule:
-    def __init__(self):
-        self.curr=(0,0)
-    def update(self):
-        prev=self.curr
-        with open('/proc/stat','r') as f:
-            fields=list(map(int,f.readline().split()[1:]))
-        self.curr=(
-            fields[3],
-            sum(fields),
-        )
-        self.display=str(int(100*(1-(self.curr[0]-prev[0])/(self.curr[1]-prev[1]))))
-class RAMModule:
-    def __init__(self):
-        pass
-    def update(self):
-        self.display=Popen(['free','-h','--si'],stdout=PIPE).stdout.read().decode().splitlines()[1].split()[2]
-class BatteryModule:
-    def __init__(self):
-        pass
-    def update(self):
-        a=Popen(['acpi'],stdout=PIPE).stdout.read().decode().strip().split(': ')[1].split(', ')
-        self.display=a[1][:-1]+a[0][0].lower()
-class KeyboardModule:
-    def __init__(self):
-        pass
-    def update(self):
-        self.display=Popen(['kblm','query'],stdout=PIPE).stdout.read().decode().strip()
-class TimeModule:
-    def __init__(self):
-        pass
-    def update(self):
-        time_string=datetime.now().astimezone().isoformat(' ')
-        dot_idx=time_string.find('.')
-        self.display='{} (UTC{})'.format(time_string[:dot_idx],time_string[dot_idx+7:])
-modules=[
-    (NetModule(),'net',2),
-    (DiskModule(),'disk',2),
-    (PulseModule('source'),'srce',10),
-    (PulseModule('sink'),'sink',10),
-    (BrightnessModule(),'brig',10),
-    (TemperatureModule(),'temp',10),
-    (CPUModule(),'cpu',2),
-    (RAMModule(),'ram',2),
-    (BatteryModule(),'bat',10),
-    (KeyboardModule(),'keyb',10),
-    (TimeModule(),'earth',1),
-]
-def refresh(i):
-    for module,label,period_s in modules:
-        if not (i%period_s):
-            module.update()
-    sys.stdout.write(' | '.join(map(lambda x:'{}: {}'.format(x[1],x[0].display),modules))+'\n')
-    sys.stdout.flush()
-signal.signal(signal.SIGUSR1,lambda signum,stack:refresh(0))
-with open('/tmp/status.pid','w') as f:
-    f.write(str(os.getpid()))
-i=0
-while True:
-    with suppress(Exception):
-        refresh(i)
-    sleep(1)
-    i+=1
+#!/usr/bin/env -S sbcl --script
+(require :sb-posix)
+(require :asdf)
+(require :cl-ppcre)
+(require :local-time)
+(defun human (n)
+  (let (
+    (u '(#\space #\K #\M #\G #\T #\P #\E))
+    (nn -1))
+    (loop while (>= n 1000) do
+      (setf u (cdr u))
+      (setf nn (truncate (/ n 100)))
+      (setf n (truncate (/ n 1000))))
+    (setf u (string-trim '(#\space) (string (car u))))
+    (concatenate 'string
+      (write-to-string n)
+      (if (and (< n 10) (> nn -1))
+        (concatenate 'string
+          ","
+          (write-to-string (mod nn 10)))
+        "")
+      u)))
+(defclass time-module () (
+  (display :accessor module-display)))
+(defmethod module-update ((m time-module))
+  (setf
+    (module-display m)
+    (local-time:format-timestring
+      nil
+      (local-time:now)
+      :format '(
+        :year
+        #\-
+        (:month 2)
+        #\-
+        (:day 2)
+        #\space
+        (:hour 2)
+        #\:
+        (:min 2)
+        #\:
+        (:sec 2)
+        " (UTC"
+        :gmt-offset #\)))))
+(defclass keyboard-module () (
+  (display :accessor module-display)))
+(defmethod module-update ((m keyboard-module))
+  (setf
+    (module-display m)
+    (string-right-trim
+      '(#\newline)
+      (uiop:run-program '("kblm" "query") :output :string))))
+(defclass battery-module () (
+  (display :accessor module-display)))
+(defmethod module-update ((m battery-module))
+  (let (
+    (a (cl-ppcre:split
+      ", "
+      (cadr (cl-ppcre:split
+        ": "
+        (uiop:run-program '("acpi") :output :string))))))
+    (setf
+      (module-display m)
+      (concatenate 'string
+        (subseq (cadr a) 0 (1- (length (cadr a))))
+        (string (char-downcase (char (car a) 0)))))))
+(defclass ram-module () (
+  (display :accessor module-display)))
+(defmethod module-update ((m ram-module))
+  (setf
+    (module-display m)
+    (caddr (cl-ppcre:split
+      "\\s+"
+      (cadr (cl-ppcre:split
+        #\newline
+        (uiop:run-program '("free" "-h" "--si") :output :string)))))))
+(defclass cpu-module () (
+  (curr :initform '(0 0) :accessor cpu-module-curr)
+  (display :accessor module-display)))
+(defmethod module-update ((m cpu-module))
+  (let (
+    (prev (cpu-module-curr m))
+    (fields (mapcar #'parse-integer (cdr (cl-ppcre:split
+      "\\s+"
+      (with-open-file (f "/proc/stat")
+        (read-line f)))))))
+    (setf
+      (cpu-module-curr m)
+      (list
+        (cadddr fields)
+        (apply #'+ fields)))
+    (setf
+      (module-display m)
+      (write-to-string (floor (* -100 (1- (/
+        (- (car (cpu-module-curr m)) (car prev))
+        (- (cadr (cpu-module-curr m)) (cadr prev))))))))))
+(defclass temperature-module () (
+  (display :accessor module-display)))
+(defmethod module-update ((m temperature-module))
+  (let (
+    (a (cadar
+      (remove-if-not
+        (lambda (x)
+          (equal (car x) "CPU:"))
+        (mapcar
+          (lambda (x)
+            (cl-ppcre:split "\\s+" x))
+          (cl-ppcre:split #\newline (car
+            (remove-if-not
+              (lambda (x)
+                (cl-ppcre:scan "thinkpad-isa-0000" x))
+              (cl-ppcre:split
+                "\n\n"
+                (uiop:run-program '("sensors") :output :string))))))))))
+    (setf
+      (module-display m)
+      (write-to-string (floor (read-from-string
+        (subseq a 0 (- (length a) 2))))))))
+(defclass brightness-module () (
+  (display :accessor module-display)))
+(defmethod module-update ((m brightness-module))
+  (let (
+    (a (cadddr
+      (cl-ppcre:split
+        #\space
+        (string-left-trim
+          '(#\tab)
+          (cadr
+            (cl-ppcre:split
+              #\newline
+              (uiop:run-program '("brightnessctl") :output :string))))))))
+    (setf
+      (module-display m)
+      (subseq a 1 (- (length a) 2)))))
+(defclass pulse-module () (
+  (type :initarg :type :accessor pulse-module-type)
+  (display :accessor module-display)))
+(defmethod module-update ((m pulse-module))
+  (let* (
+    (outs (mapcar
+      (lambda (x)
+        (uiop:run-program (list
+          "pactl"
+          (format nil "get-~a-~a" (pulse-module-type m) x)
+          (format nil "@DEFAULT_~a@" (string-upcase (pulse-module-type m))))
+          :output :string))
+      '("volume" "mute")))
+    (vol (nth 4
+      (cl-ppcre:split
+        "\\s+"
+        (car outs)))))
+    (setf
+      (module-display m)
+      (concatenate 'string
+        (subseq vol 0 (1- (length vol)))
+        (if (cl-ppcre:scan (cadr outs) "nein") "u" "m")))))
+(defclass disk-module () (
+  (device :accessor disk-module-device)
+  (bytes-per-sector :accessor disk-module-bytes-per-sector)
+  (curr-sectors :initform '(0 0) :accessor disk-module-curr-sectors)
+  (curr-upd-ts :initform 0 :accessor disk-module-curr-upd-ts)
+  (display :accessor module-display)))
+(defmethod initialize-instance :after ((m disk-module) &key)
+  (setf
+    (disk-module-device m)
+    (string-right-trim
+      '(#\newline)
+      (uiop:run-program '("sh" "-c"
+        "lsblk -slno NAME $(df -h --output=source ~/stuff | tail -n 1) | tail -n 1")
+        :output :string)))
+  (setf
+    (disk-module-bytes-per-sector m)
+    (parse-integer
+      (uiop:read-file-string
+        (format nil "/sys/block/~a/queue/hw_sector_size" (disk-module-device m)))))
+  (module-update m))
+(defmethod module-update ((m disk-module))
+  (let (
+    (prev-sectors (disk-module-curr-sectors m))
+    (prev-upd-ts (disk-module-curr-upd-ts m))
+    (diskstats (car (remove-if-not
+      (lambda (x)
+        (equal (caddr x) (disk-module-device m)))
+      (mapcar
+        (lambda (x)
+          (cl-ppcre:split "\\s+" (string-trim '(#\space) x)))
+        (with-open-file (f "/proc/diskstats")
+          (loop for x = (read-line f nil) while x collect x)))))))
+    (setf (disk-module-curr-sectors m) (list
+      (parse-integer (nth 5 diskstats))
+      (parse-integer (nth 9 diskstats))))
+    (setf (disk-module-curr-upd-ts m)
+      (/ (get-internal-real-time) internal-time-units-per-second))
+    (setf (module-display m)
+      (apply #'format (concatenate 'list
+        '(nil "v~d/s ^~d/s")
+        (mapcar
+          (lambda (x)
+            (human (ceiling (/
+              (*
+                (disk-module-bytes-per-sector m)
+                (- (nth x (disk-module-curr-sectors m)) (nth x prev-sectors)))
+              (- (disk-module-curr-upd-ts m) prev-upd-ts)))))
+          '(0 1)))))))
+(defclass net-module () (
+  (interf :accessor net-module-interf)
+  (curr-bytes :initform '(0 0) :accessor net-module-curr-bytes)
+  (curr-upd-ts :initform 0 :accessor net-module-curr-upd-ts)
+  (display :accessor module-display)))
+(defmethod initialize-instance :after ((m net-module) &key)
+  (setf (net-module-interf m)
+    (caar (remove-if-not
+      (lambda (x)
+        (equal (cadr x) "wifi"))
+      (mapcar
+        (lambda (x)
+          (cl-ppcre:split #\: x))
+        (cl-ppcre:split
+          #\newline
+          (uiop:run-program
+            '("nmcli" "-t" "-f" "DEVICE,TYPE" "device")
+            :output :string))))))
+  (module-update m))
+(defmethod module-update ((m net-module))
+  (let (
+    (prev-bytes (net-module-curr-bytes m))
+    (prev-upd-ts (net-module-curr-upd-ts m)))
+    (setf (net-module-curr-bytes m)
+      (mapcar
+        (lambda (x)
+          (parse-integer
+            (with-open-file (
+              f
+              (format
+                nil
+                "/sys/class/net/~a/statistics/~cx_bytes"
+                (net-module-interf m)
+                x))
+              (read-line f))))
+        '(#\r #\t)))
+    (setf (net-module-curr-upd-ts m)
+      (/ (get-internal-real-time) internal-time-units-per-second))
+    (setf (module-display m)
+      (apply #'format (concatenate 'list
+        '(nil "v~d/s ^~d/s")
+        (mapcar
+          (lambda (x)
+            (human (ceiling (/
+              (- (nth x (net-module-curr-bytes m)) (nth x prev-bytes))
+              (- (net-module-curr-upd-ts m) prev-upd-ts)))))
+          '(0 1)))))))
+(defparameter *module-list* `(
+  (,(make-instance 'net-module) "net" 2)
+  (,(make-instance 'disk-module) "disk" 2)
+  (,(make-instance 'pulse-module :type "source") "srce" 10)
+  (,(make-instance 'pulse-module :type "sink") "sink" 10)
+  (,(make-instance 'brightness-module) "brig" 10)
+  (,(make-instance 'temperature-module) "temp" 10)
+  (,(make-instance 'cpu-module) "cpu" 2)
+  (,(make-instance 'ram-module) "ram" 2)
+  (,(make-instance 'battery-module) "bat" 10)
+  (,(make-instance 'keyboard-module) "keyb" 10)
+  (,(make-instance 'time-module) "earth" 1)))
+(defun refresh (i)
+  (dolist (x *module-list*)
+    (when (zerop (mod i (caddr x)))
+      (module-update (car x))))
+  (princ
+    (reduce
+      (lambda (a b)
+        (concatenate 'string a " | " b))
+      (mapcar
+        (lambda (x)
+          (format nil "~a: ~a" (cadr x) (module-display (car x))))
+        *module-list*)))
+  (terpri)
+  (finish-output))
+(sb-sys:enable-interrupt sb-unix:sigusr1 (lambda (sig info context) (refresh 0)))
+(with-open-file (f "/tmp/status.pid" :direction :output :if-exists :supersede)
+  (write (sb-posix:getpid) :stream f))
+(loop for i from 0 do
+  (refresh i)
+  (sleep 1))
 

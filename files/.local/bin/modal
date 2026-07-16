@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+touch ~/.modal.toml
+exec guix time-machine \
+    --channels=$HOME/.config/guix/channels.pinned.scm \
+    -- \
+    shell \
+    --container \
+    --network \
+    --share=$HOME/.modal.toml \
+    --manifest=$HOME/.local/share/manifests/modal.scm \
+    -- \
+    modal \
+    "$@"
+
