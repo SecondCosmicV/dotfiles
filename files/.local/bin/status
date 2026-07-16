@@ -8,7 +8,7 @@ from time import time,sleep
 from datetime import datetime
 from contextlib import suppress
 def human(n):
-    u=' KMGT'
+    u=' KMGTPE'
     N=-1
     while n>=1000:
         u=u[1:]
@@ -35,8 +35,8 @@ class NetModule:
             with open(f'/sys/class/net/{self.interf}/statistics/{x}x_bytes','r') as f:
                 self.curr_bytes[i]=int(f.read())
         self.curr_upd_ts=time()
-        self.display='v{} ^{}'.format(*map(human,map(math.ceil,map(
-            lambda x:(self.curr_bytes[x]-prev_bytes[x])/(self.curr_upd_ts-prev_upd_ts),
+        self.display='v{}bps ^{}bps'.format(*map(human,map(math.ceil,map(
+            lambda x:8*(self.curr_bytes[x]-prev_bytes[x])/(self.curr_upd_ts-prev_upd_ts),
             range(2),
         ))))
 class DiskModule:
@@ -53,8 +53,8 @@ class DiskModule:
             diskstats=next(filter(lambda x:x[2]==self.device,map(lambda x:x.split(),f)))
         self.curr_sectors=(int(diskstats[5]),int(diskstats[9]))
         self.curr_upd_ts=time()
-        self.display='v{} ^{}'.format(*map(human,map(math.ceil,map(
-            lambda x:(self.curr_sectors[x]-prev_sectors[x])*self.bytes_per_sector/(self.curr_upd_ts-prev_upd_ts),
+        self.display='v{}bps ^{}bps'.format(*map(human,map(math.ceil,map(
+            lambda x:8*(self.curr_sectors[x]-prev_sectors[x])*self.bytes_per_sector/(self.curr_upd_ts-prev_upd_ts),
             range(2),
         ))))
 class PulseModule:
