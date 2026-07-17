@@ -245,9 +245,9 @@
   (,(make-instance 'battery-module) "bat" 10)
   (,(make-instance 'keyboard-module) "keyb" 10)
   (,(make-instance 'time-module) "earth" 1)))
-(defun refresh (i)
+(defun refresh (idx)
   (dolist (x +module-list+)
-    (when (zerop (mod i (caddr x)))
+    (when (zerop (mod idx (caddr x)))
       (module-update (car x))))
   (princ
     (reduce
@@ -259,10 +259,18 @@
         +module-list+)))
   (terpri)
   (finish-output))
-(sb-sys:enable-interrupt sb-unix:sigusr1 (lambda (sig info context) (refresh 0)))
+(defparameter *force-refresh* nil)
+(defconstant +fr-inverse-latency-s+ 100)
+(sb-sys:enable-interrupt sb-unix:sigusr1 (lambda (sig info context) (setf *force-refresh* t)))
 (with-open-file (f "/tmp/status.pid" :direction :output :if-exists :supersede)
   (write (sb-posix:getpid) :stream f))
 (loop for i from 0 do
-  (ignore-errors (refresh i))
-  (sleep 1))
+  (when (or (zerop (mod i +fr-inverse-latency-s+)) *force-refresh*)
+    (ignore-errors (refresh
+      (if *force-refresh*
+        (progn
+          (setf *force-refresh* nil)
+          0)
+        (/ i +fr-inverse-latency-s+)))))
+  (sleep (/ 1 +fr-inverse-latency-s+)))
 
