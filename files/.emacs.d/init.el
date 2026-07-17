@@ -24,6 +24,7 @@
 (setq dired-listing-switches "-lah --group-directories-first")
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (setq enable-local-variables nil)
+(setq async-shell-command-buffer 'new-buffer)
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
 (setq-default truncate-lines t)
