@@ -5,7 +5,7 @@
 (require :local-time)
 (defun human (n)
   (let (
-    (u '(#\space #\K #\M #\G #\T #\P #\E))
+    (u (coerce " KMGTPE" 'list))
     (nn -1))
     (loop while (>= n 1000) do
       (setf u (cdr u))
@@ -23,30 +23,22 @@
 (defclass time-module () (
   (display :accessor module-display)))
 (defmethod module-update ((m time-module))
-  (setf
-    (module-display m)
+  (setf (module-display m)
     (local-time:format-timestring
       nil
       (local-time:now)
       :format '(
-        :year
-        #\-
-        (:month 2)
-        #\-
-        (:day 2)
-        #\space
-        (:hour 2)
-        #\:
-        (:min 2)
-        #\:
-        (:sec 2)
-        " (UTC"
+        :year #\-
+        (:month 2) #\-
+        (:day 2) #\space
+        (:hour 2) #\:
+        (:min 2) #\:
+        (:sec 2) " (UTC"
         :gmt-offset #\)))))
 (defclass keyboard-module () (
   (display :accessor module-display)))
 (defmethod module-update ((m keyboard-module))
-  (setf
-    (module-display m)
+  (setf (module-display m)
     (string-right-trim
       '(#\newline)
       (uiop:run-program '("kblm" "query") :output :string))))
@@ -61,16 +53,14 @@
         (string-right-trim
           '(#\newline)
           (uiop:run-program '("acpi") :output :string)))))))
-    (setf
-      (module-display m)
+    (setf (module-display m)
       (concatenate 'string
         (subseq (cadr a) 0 (1- (length (cadr a))))
         (string (char-downcase (char (car a) 0)))))))
 (defclass ram-module () (
   (display :accessor module-display)))
 (defmethod module-update ((m ram-module))
-  (setf
-    (module-display m)
+  (setf (module-display m)
     (caddr (cl-ppcre:split
       "\\s+"
       (cadr (uiop:split-string
@@ -86,13 +76,11 @@
       "\\s+"
       (with-open-file (f "/proc/stat")
         (read-line f)))))))
-    (setf
-      (cpu-module-curr m)
+    (setf (cpu-module-curr m)
       (list
         (cadddr fields)
         (apply #'+ fields)))
-    (setf
-      (module-display m)
+    (setf (module-display m)
       (write-to-string (truncate (* -100 (1- (/
         (- (car (cpu-module-curr m)) (car prev))
         (- (cadr (cpu-module-curr m)) (cadr prev))))))))))
@@ -116,8 +104,7 @@
                   (coerce (make-list 2 :initial-element #\newline) 'string)
                   (uiop:run-program '("sensors") :output :string))))
             :separator '(#\newline)))))))
-    (setf
-      (module-display m)
+    (setf (module-display m)
       (write-to-string (truncate (read-from-string
         (subseq a 0 (- (length a) 2))))))))
 (defclass brightness-module () (
@@ -131,8 +118,7 @@
           (uiop:split-string
             (uiop:run-program '("brightnessctl") :output :string)
             :separator '(#\newline))))))))
-    (setf
-      (module-display m)
+    (setf (module-display m)
       (subseq a 1 (- (length a) 2)))))
 (defclass pulse-module () (
   (type :initarg :type :accessor pulse-module-type)
@@ -141,18 +127,15 @@
   (let* (
     (outs (mapcar
       (lambda (x)
-        (uiop:run-program (list
-          "pactl"
-          (format nil "get-~a-~a" (pulse-module-type m) x)
-          (format nil "@DEFAULT_~a@" (string-upcase (pulse-module-type m))))
+        (uiop:run-program
+          (list
+            "pactl"
+            (format nil "get-~a-~a" (pulse-module-type m) x)
+            (format nil "@DEFAULT_~a@" (string-upcase (pulse-module-type m))))
           :output :string))
       '("volume" "mute")))
-    (vol (nth 4
-      (cl-ppcre:split
-        "\\s+"
-        (car outs)))))
-    (setf
-      (module-display m)
+    (vol (nth 4 (cl-ppcre:split "\\s+" (car outs)))))
+    (setf (module-display m)
       (concatenate 'string
         (subseq vol 0 (1- (length vol)))
         (if (search "nein" (cadr outs)) "u" "m")))))
@@ -163,15 +146,13 @@
   (curr-upd-ts :initform 0 :accessor disk-module-curr-upd-ts)
   (display :accessor module-display)))
 (defmethod initialize-instance :after ((m disk-module) &key)
-  (setf
-    (disk-module-device m)
+  (setf (disk-module-device m)
     (string-right-trim
       '(#\newline)
       (uiop:run-program
         "lsblk -slno NAME $(df -h --output=source ~/stuff | tail -n 1) | tail -n 1"
         :output :string)))
-  (setf
-    (disk-module-bytes-per-sector m)
+  (setf (disk-module-bytes-per-sector m)
     (parse-integer
       (uiop:read-file-string
         (format nil "/sys/block/~a/queue/hw_sector_size" (disk-module-device m)))))
@@ -185,12 +166,13 @@
         (equal (caddr x) (disk-module-device m)))
       (mapcar
         (lambda (x)
-          (cl-ppcre:split "\\s+" (string-trim '(#\space) x)))
+          (cl-ppcre:split "\\s+" (string-left-trim '(#\space) x)))
         (with-open-file (f "/proc/diskstats")
           (loop for x = (read-line f nil) while x collect x)))))))
-    (setf (disk-module-curr-sectors m) (list
-      (parse-integer (nth 5 diskstats))
-      (parse-integer (nth 9 diskstats))))
+    (setf (disk-module-curr-sectors m)
+      (list
+        (parse-integer (nth 5 diskstats))
+        (parse-integer (nth 9 diskstats))))
     (setf (disk-module-curr-upd-ts m)
       (/ (get-internal-real-time) internal-time-units-per-second))
     (setf (module-display m)
