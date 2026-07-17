@@ -71,9 +71,9 @@
     (module-display m)
     (caddr (cl-ppcre:split
       "\\s+"
-      (cadr (cl-ppcre:split
-        #\newline
-        (uiop:run-program '("free" "-h" "--si") :output :string)))))))
+      (cadr (uiop:split-string
+        (uiop:run-program '("free" "-h" "--si") :output :string)
+        :separator '(#\newline)))))))
 (defclass cpu-module () (
   (curr :initform '(0 0) :accessor cpu-module-curr)
   (display :accessor module-display)))
@@ -105,13 +105,15 @@
         (mapcar
           (lambda (x)
             (cl-ppcre:split "\\s+" x))
-          (cl-ppcre:split #\newline (car
-            (remove-if-not
-              (lambda (x)
-                (cl-ppcre:scan "thinkpad-isa-0000" x))
-              (cl-ppcre:split
-                "\n\n"
-                (uiop:run-program '("sensors") :output :string))))))))))
+          (uiop:split-string
+            (car
+              (remove-if-not
+                (lambda (x)
+                  (cl-ppcre:scan "thinkpad-isa-0000" x))
+                (cl-ppcre:split
+                  (coerce (make-list 2 :initial-element #\newline) 'string)
+                  (uiop:run-program '("sensors") :output :string))))
+            :separator '(#\newline)))))))
     (setf
       (module-display m)
       (write-to-string (floor (read-from-string
@@ -120,15 +122,13 @@
   (display :accessor module-display)))
 (defmethod module-update ((m brightness-module))
   (let (
-    (a (cadddr
-      (cl-ppcre:split
-        #\space
-        (string-left-trim
-          '(#\tab)
-          (cadr
-            (cl-ppcre:split
-              #\newline
-              (uiop:run-program '("brightnessctl") :output :string))))))))
+    (a (cadddr (uiop:split-string
+      (string-left-trim
+        '(#\tab)
+        (cadr
+          (uiop:split-string
+            (uiop:run-program '("brightnessctl") :output :string)
+            :separator '(#\newline))))))))
     (setf
       (module-display m)
       (subseq a 1 (- (length a) 2)))))
@@ -165,8 +165,8 @@
     (disk-module-device m)
     (string-right-trim
       '(#\newline)
-      (uiop:run-program '("sh" "-c"
-        "lsblk -slno NAME $(df -h --output=source ~/stuff | tail -n 1) | tail -n 1")
+      (uiop:run-program
+        "lsblk -slno NAME $(df -h --output=source ~/stuff | tail -n 1) | tail -n 1"
         :output :string)))
   (setf
     (disk-module-bytes-per-sector m)
@@ -214,12 +214,12 @@
         (equal (cadr x) "wifi"))
       (mapcar
         (lambda (x)
-          (cl-ppcre:split #\: x))
-        (cl-ppcre:split
-          #\newline
+          (uiop:split-string x :separator '(#\:)))
+        (uiop:split-string
           (uiop:run-program
             '("nmcli" "-t" "-f" "DEVICE,TYPE" "device")
-            :output :string))))))
+            :output :string)
+          :separator '(#\newline))))))
   (module-update m))
 (defmethod module-update ((m net-module))
   (let (
@@ -279,6 +279,6 @@
 (with-open-file (f "/tmp/status.pid" :direction :output :if-exists :supersede)
   (write (sb-posix:getpid) :stream f))
 (loop for i from 0 do
-  (refresh i)
+  (ignore-errors (refresh i))
   (sleep 1))
 
