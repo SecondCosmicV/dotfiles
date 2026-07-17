@@ -16,5 +16,6 @@
 (sb-sys:enable-interrupt sb-unix:sigusr1 (lambda (sig info context) (rerandr)))
 (with-open-file (f "/tmp/monman.pid" :direction :output :if-exists :supersede)
   (write (sb-posix:getpid) :stream f))
+(rerandr)
 (loop (sleep 1))
 
