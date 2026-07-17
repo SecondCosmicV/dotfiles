@@ -233,7 +233,7 @@
               (- (nth x (net-module-curr-bytes m)) (nth x prev-bytes))
               (- (net-module-curr-upd-ts m) prev-upd-ts)))))
           '(0 1)))))))
-(defparameter *module-list* `(
+(defconstant +module-list+ `(
   (,(make-instance 'net-module) "net" 2)
   (,(make-instance 'disk-module) "disk" 2)
   (,(make-instance 'pulse-module :type "source") "srce" 10)
@@ -246,7 +246,7 @@
   (,(make-instance 'keyboard-module) "keyb" 10)
   (,(make-instance 'time-module) "earth" 1)))
 (defun refresh (i)
-  (dolist (x *module-list*)
+  (dolist (x +module-list+)
     (when (zerop (mod i (caddr x)))
       (module-update (car x))))
   (princ
@@ -256,7 +256,7 @@
       (mapcar
         (lambda (x)
           (format nil "~a: ~a" (cadr x) (module-display (car x))))
-        *module-list*)))
+        +module-list+)))
   (terpri)
   (finish-output))
 (sb-sys:enable-interrupt sb-unix:sigusr1 (lambda (sig info context) (refresh 0)))

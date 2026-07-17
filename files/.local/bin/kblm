@@ -11,12 +11,12 @@
           :separator '(#\newline))))
       :test #'equal)))
 (defconstant +layouts+ '("us" "hu"))
-(defparameter *cmd* (car (uiop:command-line-arguments)))
+(defconstant +cmd+ (car (uiop:command-line-arguments)))
 (cond
-  ((equal *cmd* "query")
+  ((equal +cmd+ "query")
     (princ (get-curr-layout))
     (terpri))
-  ((equal *cmd* "toggle")
+  ((equal +cmd+ "toggle")
     (uiop:run-program (list
       "setxkbmap"
       "-layout"
