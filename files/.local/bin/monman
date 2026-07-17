@@ -13,9 +13,13 @@
       (list +lid-name+ +ext-name+))))
     (uiop:run-program `("xrandr" "--output" ,(car names) "--primary" "--auto"))
     (uiop:run-program `("xrandr" "--output" ,(cadr names) "--off"))))
-(sb-sys:enable-interrupt sb-unix:sigusr1 (lambda (sig info context) (rerandr)))
+(defparameter *force-rerandr* t)
+(sb-sys:enable-interrupt sb-unix:sigusr1 (lambda (sig info context) (setf *force-rerandr* t)))
 (with-open-file (f "/tmp/monman.pid" :direction :output :if-exists :supersede)
   (write (sb-posix:getpid) :stream f))
-(rerandr)
-(loop (sleep 1))
+(loop
+  (when *force-rerandr*
+    (setf *force-rerandr* nil)
+    (rerandr))
+  (sleep 1))
 
