@@ -58,7 +58,9 @@
       ", "
       (cadr (cl-ppcre:split
         ": "
-        (uiop:run-program '("acpi") :output :string))))))
+        (string-right-trim
+          '(#\newline)
+          (uiop:run-program '("acpi") :output :string)))))))
     (setf
       (module-display m)
       (concatenate 'string
@@ -109,7 +111,7 @@
             (car
               (remove-if-not
                 (lambda (x)
-                  (cl-ppcre:scan "thinkpad-isa-0000" x))
+                  (uiop:string-prefix-p "thinkpad-isa-0000" x))
                 (cl-ppcre:split
                   (coerce (make-list 2 :initial-element #\newline) 'string)
                   (uiop:run-program '("sensors") :output :string))))
@@ -153,7 +155,7 @@
       (module-display m)
       (concatenate 'string
         (subseq vol 0 (1- (length vol)))
-        (if (cl-ppcre:scan (cadr outs) "nein") "u" "m")))))
+        (if (search "nein" (cadr outs)) "u" "m")))))
 (defclass disk-module () (
   (device :accessor disk-module-device)
   (bytes-per-sector :accessor disk-module-bytes-per-sector)

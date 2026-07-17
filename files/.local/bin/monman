@@ -1,19 +1,20 @@
-#!/usr/bin/env python3
-import os
-from subprocess import Popen,PIPE
-import signal
-from time import sleep
-def rerandr():
-    lid_name='eDP'
-    ext_name='HDMI-A-0'
-    xrandr_outp=Popen(['xrandr'],stdout=PIPE).stdout.read().decode()
-    on_name,off_name=(ext_name,lid_name) if ext_name+' connected' in xrandr_outp else (lid_name,ext_name)
-    Popen(['xrandr','--output',on_name,'--primary','--auto']).wait()
-    Popen(['xrandr','--output',off_name,'--off'])
-signal.signal(signal.SIGUSR1,lambda signum,stack:rerandr())
-with open('/tmp/monman.pid','w') as f:
-    f.write(str(os.getpid()))
-rerandr()
-while True:
-    sleep(1)
+#!/usr/bin/env -S sbcl --script
+(require :sb-posix)
+(require :uiop)
+(defconstant +lid-name+ "eDP")
+(defconstant +ext-name+ "HDMI-A-0")
+(defun rerandr ()
+  (let (
+    (names (if
+      (search
+        (concatenate 'string +ext-name+ " connected")
+        (uiop:run-program '("xrandr") :output :string))
+      (list +ext-name+ +lid-name+)
+      (list +lid-name+ +ext-name+))))
+    (uiop:run-program `("xrandr" "--output" ,(car names) "--primary" "--auto"))
+    (uiop:run-program `("xrandr" "--output" ,(cadr names) "--off"))))
+(sb-sys:enable-interrupt sb-unix:sigusr1 (lambda (sig info context) (rerandr)))
+(with-open-file (f "/tmp/monman.pid" :direction :output :if-exists :supersede)
+  (write (sb-posix:getpid) :stream f))
+(loop (sleep 1))
 

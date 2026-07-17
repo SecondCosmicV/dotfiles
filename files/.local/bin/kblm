@@ -1,15 +1,29 @@
-#!/usr/bin/env python3
-# KeyBoard Layout Manager
-from sys import argv as args
-from subprocess import Popen,PIPE
-def get_curr_layout():
-    return Popen(['setxkbmap','-query'],stdout=PIPE).stdout.read().decode().strip().splitlines()[2].strip().split()[1]
-match args[1]:
-    case 'query':
-        print(get_curr_layout())
-    case 'toggle':
-        layouts=['us','hu']
-        Popen(['setxkbmap','-layout',layouts[(layouts.index(get_curr_layout())+1)%len(layouts)]])
-    case _:
-        exit(1)
+#!/usr/bin/env -S sbcl --script
+;; KeyBoard Layout Manager
+(require :uiop)
+(defun get-curr-layout ()
+  (cadr
+    (remove
+      ""
+      (uiop:split-string (caddr
+        (uiop:split-string
+          (uiop:run-program '("setxkbmap" "-query") :output :string)
+          :separator '(#\newline))))
+      :test #'equal)))
+(defconstant +layouts+ '("us" "hu"))
+(defparameter *cmd* (car (uiop:command-line-arguments)))
+(cond
+  ((equal *cmd* "query")
+    (princ (get-curr-layout))
+    (terpri))
+  ((equal *cmd* "toggle")
+    (uiop:run-program (list
+      "setxkbmap"
+      "-layout"
+      (nth
+        (mod
+          (1+ (position (get-curr-layout) +layouts+ :test #'equal))
+          (length +layouts+))
+        +layouts+))))
+  (t (uiop:quit 1)))
 
