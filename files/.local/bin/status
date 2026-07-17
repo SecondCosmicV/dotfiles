@@ -93,7 +93,7 @@
         (apply #'+ fields)))
     (setf
       (module-display m)
-      (write-to-string (floor (* -100 (1- (/
+      (write-to-string (truncate (* -100 (1- (/
         (- (car (cpu-module-curr m)) (car prev))
         (- (cadr (cpu-module-curr m)) (cadr prev))))))))))
 (defclass temperature-module () (
@@ -118,7 +118,7 @@
             :separator '(#\newline)))))))
     (setf
       (module-display m)
-      (write-to-string (floor (read-from-string
+      (write-to-string (truncate (read-from-string
         (subseq a 0 (- (length a) 2))))))))
 (defclass brightness-module () (
   (display :accessor module-display)))
