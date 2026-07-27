@@ -2,7 +2,7 @@
   (gnu)
   (gnu packages cryptsetup)
   (gnu packages linux)
-  (gnu packages wm)
+  (gnu packages window-management)
   (gnu services desktop)
   (gnu services pm)
   (gnu services shepherd)

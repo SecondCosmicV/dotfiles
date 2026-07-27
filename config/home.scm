@@ -6,6 +6,7 @@
   (gnu home services mpv)
   (gnu home services shells)
   (gnu packages admin)
+  (gnu packages bittorrent)
   (gnu packages browser-extensions)
   (gnu packages chromium)
   (gnu packages commencement)
@@ -32,6 +33,7 @@
   (gnu packages lisp-xyz)
   (gnu packages llvm)
   (gnu packages lxde)
+  (gnu packages networking)
   (gnu packages package-management)
   (gnu packages pdf)
   (gnu packages photo)
@@ -47,7 +49,7 @@
   (gnu packages version-control)
   (gnu packages video)
   (gnu packages virtualization)
-  (gnu packages wm)
+  (gnu packages window-management)
   (gnu packages xdisorg)
   (gnu packages xorg)
   (nongnu packages messaging)
@@ -100,6 +102,7 @@
     lm-sensors
     lxterminal
     mpv
+    nmap
     ntfs-3g
     numlockx
     obs
@@ -124,9 +127,11 @@
     stow
     tmux
     torbrowser
+    transmission
     ublock-origin/chromium
     ungoogled-chromium
     virt-manager
+    wireshark
     xclip
     xdg-desktop-portal-gtk
     xdg-utils
