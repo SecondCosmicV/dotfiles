@@ -117,6 +117,7 @@
     pulseaudio
     python
     python-lsp-server
+    qbittorrent
     rclone
     sbcl
     sbcl-cl-ppcre
@@ -127,7 +128,6 @@
     stow
     tmux
     torbrowser
-    transmission
     ublock-origin/chromium
     ungoogled-chromium
     virt-manager
