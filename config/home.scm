@@ -89,6 +89,7 @@
     gcc-toolchain
     gimp
     git
+    git-lfs
     gnu-make
     gnupg
     hicolor-icon-theme
