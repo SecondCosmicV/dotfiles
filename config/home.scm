@@ -40,6 +40,7 @@
   (gnu packages polkit)
   (gnu packages pulseaudio)
   (gnu packages python)
+  (gnu packages python-web)
   (gnu packages python-xyz)
   (gnu packages ssh)
   (gnu packages suckless)
@@ -117,6 +118,7 @@
     powertop
     pulseaudio
     python
+    python-huggingface-hub
     python-lsp-server
     qbittorrent
     rclone
