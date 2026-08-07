@@ -1,10 +1,6 @@
 (specifications->manifest '(
-  "adwaita-icon-theme"
   "clang"
   "coreutils"
   "cursor"
-  "git"
-  "python"
-  "xdg-open-hack"
-))
+  "python"))
 

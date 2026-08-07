@@ -1,5 +1,4 @@
 (specifications->manifest '(
   "coreutils"
-  "eigenwallet"
-))
+  "eigenwallet"))
 
