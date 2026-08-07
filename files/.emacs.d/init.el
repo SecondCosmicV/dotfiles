@@ -9,10 +9,18 @@
     ("C->" . mc/mark-next-like-this)
     ("C-<" . mc/mark-previous-like-this)
     ("C-c C-<" . mc/mark-all-like-this)))
+(defun connect2 ()
+  (interactive)
+  (let ((host (read-string "Host: ")))
+    (dired (concat
+      "/ssh:root@" host
+      "|sudo:app@" host
+      ":/home/app/"))))
 (menu-bar-mode -1)
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 (global-display-line-numbers-mode 1)
+(global-set-key (kbd "C-x c") 'connect2)
 (setq auto-save-default nil)
 (setq make-backup-files nil)
 (setq create-lockfiles nil)
