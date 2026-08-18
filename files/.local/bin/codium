@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+
+mkdir -p ~/.vscode-oss
+mkdir -p ~/.config/VSCodium
+mkdir -p ~/.local/state/VSCodium
+mkdir -p ~/stuff/dev
+cat << EOF > ~/.config/VSCodium/product.json
+{
+  "extensionsGallery": {
+    "serviceUrl": "https://marketplace.visualstudio.com/_apis/public/gallery",
+    "itemUrl": "https://marketplace.visualstudio.com/items",
+    "latestUrlTemplate": "https://marketplace.visualstudio.com/_apis/public/gallery/publishers/{publisher}/vsextensions/{name}/latest/vspackage",
+    "controlUrl": ""
+  }
+}
+EOF
+exec guix time-machine \
+    --channels=$HOME/.config/guix/channels.pinned.scm \
+    -- \
+    shell \
+    --container \
+    --no-cwd \
+    --network \
+    --preserve="^DISPLAY$" \
+    --preserve="^DBUS_SESSION_BUS_ADDRESS$" \
+    --expose=$XAUTHORITY \
+    --expose=/var/run/dbus/system_bus_socket \
+    --expose=$(ls /tmp/dbus-*) \
+    $(printf " --expose=%s" /gnu/store/*-home-dotfiles--config-VSCodium-*) \
+    --share=/dev/shm \
+    --share=$HOME/.vscode-oss \
+    --share=$HOME/.config/VSCodium \
+    --share=$HOME/.local/state/VSCodium \
+    --share=$HOME/stuff/dev \
+    --manifest=$HOME/.local/share/manifests/codium.scm \
+    -- \
+    codium
+

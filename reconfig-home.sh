@@ -44,7 +44,14 @@ guix shell \
     true
 guix shell \
     --container \
+    --no-cwd \
+    --manifest=$HOME/.local/share/manifests/codium.scm \
+    -- \
+    true
+guix shell \
+    --container \
     --emulate-fhs \
+    --no-cwd \
     --manifest=$HOME/.local/share/manifests/cursor.scm \
     -- \
     true
