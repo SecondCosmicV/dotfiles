@@ -76,6 +76,7 @@ bindsym $mod+l exec --no-startup-id i3lock
 bindsym $mod+space exec --no-startup-id kblm toggle && $refresh_status
 bindsym Print exec --no-startup-id flameshot gui
 bindsym $mod+m exec --no-startup-id pcmanfm
+bindsym $mod+g exec --no-startup-id gedit
 bindsym $mod+t exec --no-startup-id icedove
 bindsym $mod+b exec --no-startup-id firefox
 bindsym $mod+Shift+b exec --no-startup-id chromium --incognito
