@@ -7,7 +7,6 @@ exec --no-startup-id nm-applet
 exec --no-startup-id monman
 exec --no-startup-id feh --bg-fill ./stuff/wallps/wallp.png
 exec --no-startup-id ~/.guix-home/profile/libexec/polkit-gnome-authentication-agent-1
-exec --no-startup-id emacs --daemon
 exec --no-startup-id virsh -c qemu:///system net-start default
 set $refresh_status kill -USR1 $(cat /tmp/status.pid)
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_status
@@ -76,7 +75,7 @@ bindsym $mod+r mode "resize"
 bindsym $mod+l exec --no-startup-id i3lock
 bindsym $mod+space exec --no-startup-id kblm toggle && $refresh_status
 bindsym Print exec --no-startup-id flameshot gui
-bindsym $mod+m exec --no-startup-id emacsclient -c
+bindsym $mod+m exec --no-startup-id pcmanfm
 bindsym $mod+t exec --no-startup-id icedove
 bindsym $mod+b exec --no-startup-id firefox
 bindsym $mod+Shift+b exec --no-startup-id chromium --incognito

@@ -1,7 +1,18 @@
 #!/usr/bin/env bash
 
 set -xe
+rm -f ~/.config/pcmanfm/default/pcmanfm.conf
+cd config
+guix home reconfigure home.scm
+cd -
 dconf write /org/gtk/settings/file-chooser/show-hidden true
+dconf write /org/gnome/gedit/plugins/active-plugins "['filebrowser', 'sort', 'docinfo']"
+dconf write /org/gnome/gedit/preferences/editor/tabs-size "uint32 2"
+dconf write /org/gnome/gedit/preferences/editor/insert-spaces true
+dconf write /org/gnome/gedit/preferences/editor/use-default-font false
+dconf write /org/gnome/gedit/preferences/editor/scheme "'solarized-light'"
+dconf write /org/gnome/gedit/preferences/ui/side-panel-visible true
+dconf write /org/gnome/gedit/plugins/filebrowser/filter-mode "@as []"
 dconf write /org/virt-manager/virt-manager/xmleditor-enabled true
 cd ~/stuff/secrets
 stow -R -v -t ~ .

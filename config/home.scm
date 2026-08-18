@@ -13,8 +13,6 @@
   (gnu packages compression)
   (gnu packages dns)
   (gnu packages education)
-  (gnu packages emacs)
-  (gnu packages emacs-xyz)
   (gnu packages fonts)
   (gnu packages freedesktop)
   (gnu packages gimp)
@@ -22,10 +20,9 @@
   (gnu packages gnome-circle)
   (gnu packages gnupg)
   (gnu packages gnuzilla)
-  (gnu packages gtk)
   (gnu packages image)
-  (gnu packages image-viewers)
   (gnu packages imagemagick)
+  (gnu packages image-viewers)
   (gnu packages inkscape)
   (gnu packages libreoffice)
   (gnu packages linux)
@@ -52,6 +49,7 @@
   (gnu packages virtualization)
   (gnu packages window-management)
   (gnu packages xdisorg)
+  (gnu packages xfce)
   (gnu packages xorg)
   (nongnu packages messaging)
   (nongnu packages mozilla)
@@ -65,17 +63,7 @@
     dconf
     dmenu
     docker-compose-binary
-    dragon-drop
     efibootmgr
-    emacs
-    emacs-cape
-    emacs-corfu
-    emacs-dired-hacks
-    emacs-dockerfile-mode
-    emacs-magit
-    emacs-multiple-cursors
-    emacs-solarized-theme
-    emacs-yaml-mode
     evince
     fastfetch
     feh
@@ -88,6 +76,7 @@
     font-google-noto-sans-cjk
     font-google-noto-sans-hebrew
     gcc-toolchain
+    gedit
     gimp
     git
     git-lfs
@@ -110,6 +99,7 @@
     obs
     openboard
     openssh
+    pcmanfm
     perl-image-exiftool
     pigz
     pinentry
@@ -122,6 +112,7 @@
     python-lsp-server
     qbittorrent
     rclone
+    ristretto
     sbcl
     sbcl-cl-ppcre
     sbcl-local-time
@@ -131,6 +122,7 @@
     stow
     tmux
     torbrowser
+    tumbler
     ublock-origin/chromium
     ungoogled-chromium
     virt-manager
