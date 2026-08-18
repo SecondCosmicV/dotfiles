@@ -28,7 +28,6 @@
   (gnu packages linux)
   (gnu packages lisp)
   (gnu packages lisp-xyz)
-  (gnu packages llvm)
   (gnu packages lxde)
   (gnu packages networking)
   (gnu packages package-management)
@@ -38,7 +37,6 @@
   (gnu packages pulseaudio)
   (gnu packages python)
   (gnu packages python-web)
-  (gnu packages python-xyz)
   (gnu packages ssh)
   (gnu packages suckless)
   (gnu packages sync)
@@ -59,7 +57,6 @@
     7zip
     acpi
     adwaita-icon-theme
-    clang
     dconf
     dmenu
     docker-compose-binary
@@ -109,7 +106,6 @@
     pulseaudio
     python
     python-huggingface-hub
-    python-lsp-server
     qbittorrent
     rclone
     ristretto
