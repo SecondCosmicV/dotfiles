@@ -44,8 +44,9 @@ guix shell \
     true
 guix shell \
     --container \
+    --emulate-fhs \
     --no-cwd \
-    --manifest=$HOME/.local/share/manifests/codium.scm \
+    --manifest=$HOME/.local/share/manifests/code.scm \
     -- \
     true
 guix shell \
@@ -77,4 +78,12 @@ guix shell \
     -- \
     true
 guix describe -f channels > ~/.config/guix/channels.pinned.scm
+VSCODE_EXTENSIONS=(
+    GitHub.copilot-chat
+    ms-vscode-remote.remote-ssh
+    sjhuangx.vscode-scheme
+)
+for X in ${VSCODE_EXTENSIONS[@]}; do
+    code --install-extension $X
+done
 

@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+mkdir -p ~/.vscode
+mkdir -p ~/.vscode-shared
+mkdir -p ~/.config/Code
+mkdir -p ~/stuff/dev
+exec guix time-machine \
+    --channels=$HOME/.config/guix/channels.pinned.scm \
+    -- \
+    shell \
+    --container \
+    --emulate-fhs \
+    --network \
+    --preserve="^DISPLAY$" \
+    --preserve="^DBUS_SESSION_BUS_ADDRESS$" \
+    --expose=$XAUTHORITY \
+    --expose=/var/run/dbus/system_bus_socket \
+    --expose=$(ls /tmp/dbus-*) \
+    --expose=$(realpath ~/.config/Code/User/settings.json) \
+    --share=/dev/shm \
+    --share=$HOME/.vscode \
+    --share=$HOME/.vscode-shared \
+    --share=$HOME/.config/Code \
+    --share=$HOME/stuff/dev \
+    --manifest=$HOME/.local/share/manifests/code.scm \
+    -- \
+    code --verbose --wait "$@"
+
