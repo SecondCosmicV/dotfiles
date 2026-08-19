@@ -79,7 +79,8 @@ guix shell \
     true
 guix describe -f channels > ~/.config/guix/channels.pinned.scm
 VSCODE_EXTENSIONS=(
-    GitHub.copilot-chat
+    ms-python.python
+    ms-vscode.cpptools-extension-pack
     ms-vscode-remote.remote-ssh
     sjhuangx.vscode-scheme
 )

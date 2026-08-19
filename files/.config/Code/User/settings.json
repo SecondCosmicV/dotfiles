@@ -3,7 +3,19 @@
     "editor.tabSize": 2,
     "editor.insertSpaces": true
   },
+  "[json]": {
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true
+  },
+  "[jsonc]": {
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true
+  },
   "security.workspace.trust.enabled": false,
+  "update.mode": "none",
+  "telemetry.telemetryLevel": "off",
+  "telemetry.feedback.enabled": false,
+  "workbench.enableExperiments": false,
   "workbench.colorTheme": "Solarized Light"
 }
 
