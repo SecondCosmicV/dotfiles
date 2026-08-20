@@ -82,6 +82,7 @@ VSCODE_EXTENSIONS=(
     ms-python.python
     ms-vscode.cpptools-extension-pack
     ms-vscode-remote.remote-ssh
+    qingpeng.common-lisp
     sjhuangx.vscode-scheme
 )
 for X in ${VSCODE_EXTENSIONS[@]}; do

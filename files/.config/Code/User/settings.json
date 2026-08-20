@@ -3,6 +3,18 @@
     "editor.tabSize": 2,
     "editor.insertSpaces": true
   },
+  "[commonlisp]": {
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true
+  },
+  "[javascript]": {
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true
+  },
+  "[javascriptreact]": {
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true
+  },
   "[json]": {
     "editor.tabSize": 2,
     "editor.insertSpaces": true
@@ -11,8 +23,14 @@
     "editor.tabSize": 2,
     "editor.insertSpaces": true
   },
+  "[yaml]": {
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true
+  },
+  "files.trimTrailingWhitespace": true,
   "security.workspace.trust.enabled": false,
   "update.mode": "none",
+  "chat.tips.enabled": false,
   "telemetry.telemetryLevel": "off",
   "telemetry.feedback.enabled": false,
   "workbench.enableExperiments": false,

@@ -17,6 +17,10 @@ exec guix time-machine \
     --expose=/var/run/dbus/system_bus_socket \
     --expose=$(ls /tmp/dbus-*) \
     --expose=$(realpath ~/.config/Code/User/settings.json) \
+    --expose=$HOME/.gitconfig \
+    --expose=$(realpath ~/.gitconfig) \
+    --expose=$HOME/.git-credentials \
+    --expose=$(realpath ~/.git-credentials) \
     --share=/dev/shm \
     --share=$HOME/.vscode \
     --share=$HOME/.vscode-shared \
