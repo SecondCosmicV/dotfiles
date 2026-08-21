@@ -3,30 +3,41 @@
 mkdir -p ~/.vscode
 mkdir -p ~/.vscode-shared
 mkdir -p ~/.config/Code
+mkdir -p ~/.ssh/vscode
 mkdir -p ~/stuff/dev
+if [ ! -e ~/.gitconfig ]; then
+    touch ~/.gitconfig
+fi
+if [ ! -e ~/.git-credentials ]; then
+    touch ~/.git-credentials
+fi
+if [ ! -e ~/.config/Code/User/settings.json ]; then
+    mkdir -p ~/.config/Code/User
+    touch ~/.config/Code/User/settings.json
+fi
 exec guix time-machine \
     --channels=$HOME/.config/guix/channels.pinned.scm \
     -- \
     shell \
     --container \
     --emulate-fhs \
+    --no-cwd \
     --network \
     --preserve="^DISPLAY$" \
     --preserve="^DBUS_SESSION_BUS_ADDRESS$" \
     --expose=$XAUTHORITY \
     --expose=/var/run/dbus/system_bus_socket \
     --expose=$(ls /tmp/dbus-*) \
-    --expose=$(realpath ~/.config/Code/User/settings.json) \
     --expose=$HOME/.gitconfig \
-    --expose=$(realpath ~/.gitconfig) \
     --expose=$HOME/.git-credentials \
-    --expose=$(realpath ~/.git-credentials) \
+    --expose=$(realpath ~/.config/Code/User/settings.json) \
     --share=/dev/shm \
     --share=$HOME/.vscode \
     --share=$HOME/.vscode-shared \
     --share=$HOME/.config/Code \
+    --share=$HOME/.ssh/vscode=$HOME/.ssh \
     --share=$HOME/stuff/dev \
     --manifest=$HOME/.local/share/manifests/code.scm \
     -- \
-    code --verbose --wait "$@"
+    sh -c "chmod 701 $HOME && code --verbose --wait \"\$@\"" _ "$@"
 
