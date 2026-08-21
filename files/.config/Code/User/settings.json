@@ -27,6 +27,13 @@
     "editor.tabSize": 2,
     "editor.insertSpaces": true
   },
+  "github.copilot.enable": {
+    "*": true,
+    "dotenv": false
+  },
+  "search.exclude": {
+    ".vscode-server": true
+  },
   "files.trimTrailingWhitespace": true,
   "security.workspace.trust.enabled": false,
   "update.mode": "none",
