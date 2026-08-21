@@ -51,6 +51,7 @@
   (gnu packages xorg)
   (nongnu packages messaging)
   (nongnu packages mozilla)
+  (suika-chan packages devcontainer-up)
   (suika-chan packages docker-binary))
 (home-environment
   (packages (list
@@ -58,6 +59,7 @@
     acpi
     adwaita-icon-theme
     dconf
+    devcontainer-up
     dmenu
     docker-compose-binary
     efibootmgr
