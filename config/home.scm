@@ -106,8 +106,8 @@
     poppler
     powertop
     pulseaudio
-    python
     python-huggingface-hub
+    python-wrapper
     qbittorrent
     rclone
     ristretto

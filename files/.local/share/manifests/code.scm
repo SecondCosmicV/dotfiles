@@ -1,5 +1,5 @@
 (specifications->manifest '(
   "coreutils"
-  "python"
+  "python-wrapper"
   "vscode"))
 

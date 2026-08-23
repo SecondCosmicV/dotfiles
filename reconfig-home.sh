@@ -49,13 +49,6 @@ guix shell \
     --manifest=$HOME/.local/share/manifests/code.scm \
     -- \
     true
-guix shell \
-    --container \
-    --emulate-fhs \
-    --no-cwd \
-    --manifest=$HOME/.local/share/manifests/cursor.scm \
-    -- \
-    true
 mkdir -p ~/.config/discord
 guix shell \
     --container \
