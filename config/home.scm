@@ -21,8 +21,8 @@
   (gnu packages gnupg)
   (gnu packages gnuzilla)
   (gnu packages image)
-  (gnu packages imagemagick)
   (gnu packages image-viewers)
+  (gnu packages imagemagick)
   (gnu packages inkscape)
   (gnu packages libreoffice)
   (gnu packages linux)
@@ -37,6 +37,7 @@
   (gnu packages pulseaudio)
   (gnu packages python)
   (gnu packages python-web)
+  (gnu packages rsync)
   (gnu packages ssh)
   (gnu packages suckless)
   (gnu packages sync)
@@ -111,6 +112,7 @@
     qbittorrent
     rclone
     ristretto
+    rsync
     sbcl
     sbcl-cl-ppcre
     sbcl-local-time
@@ -141,9 +143,10 @@
       #:global (make-mpv-profile-configuration
         #:loop-file 'inf)))
     (simple-service 'my-env-vars-service home-environment-variables-service-type '(
-      ("PATH" . "$HOME/.local/bin:$PATH")
-      ("EDITOR" . "nano")
       ("DOCKER_BUILDKIT" . "0")
+      ("EDITOR" . "nano")
+      ("LC_COLLATE" . "C")
+      ("PATH" . "$HOME/.local/bin:$PATH")
       ("QT_QPA_PLATFORMTHEME" . "xdgdesktopportal")))
     (simple-service 'my-profile-service home-shell-profile-service-type (list
       (plain-file "my-profile" "if [ \"$(tty)\" = \"/dev/tty1\" ]; then exec startx; fi")))

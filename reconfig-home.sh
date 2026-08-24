@@ -72,9 +72,10 @@ guix shell \
     true
 guix describe -f channels > ~/.config/guix/channels.pinned.scm
 VSCODE_EXTENSIONS=(
+    Tyriar.sort-lines
     ms-python.python
-    ms-vscode.cpptools-extension-pack
     ms-vscode-remote.remote-ssh
+    ms-vscode.cpptools-extension-pack
     qingpeng.common-lisp
     sjhuangx.vscode-scheme
 )
