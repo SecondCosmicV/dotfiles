@@ -29,7 +29,10 @@
   },
   "github.copilot.enable": {
     "*": true,
-    "dotenv": false
+    "dotenv": false,
+    "json": false,
+    "jsonc": false,
+    "jsonl": false
   },
   "files.trimTrailingWhitespace": true,
   "security.workspace.trust.enabled": false,
