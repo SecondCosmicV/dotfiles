@@ -52,15 +52,14 @@
   (gnu packages xorg)
   (nongnu packages messaging)
   (nongnu packages mozilla)
-  (suika-chan packages devcontainer-up)
-  (suika-chan packages docker-binary))
+  (suika-chan packages docker-binary)
+  (suika-chan packages guix-infra))
 (home-environment
   (packages (list
     7zip
     acpi
     adwaita-icon-theme
     dconf
-    devcontainer-up
     dmenu
     docker-compose-binary
     efibootmgr
@@ -82,6 +81,7 @@
     git-lfs
     gnu-make
     gnupg
+    guix-infra
     hicolor-icon-theme
     htop
     i3-wm
@@ -143,7 +143,6 @@
       #:global (make-mpv-profile-configuration
         #:loop-file 'inf)))
     (simple-service 'my-env-vars-service home-environment-variables-service-type '(
-      ("DOCKER_BUILDKIT" . "0")
       ("EDITOR" . "nano")
       ("LC_COLLATE" . "C")
       ("PATH" . "$HOME/.local/bin:$PATH")
