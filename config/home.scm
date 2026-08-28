@@ -11,6 +11,7 @@
   (gnu packages chromium)
   (gnu packages commencement)
   (gnu packages compression)
+  (gnu packages curl)
   (gnu packages dns)
   (gnu packages education)
   (gnu packages fonts)
@@ -59,6 +60,7 @@
     7zip
     acpi
     adwaita-icon-theme
+    curl
     dconf
     dmenu
     docker-compose-binary
