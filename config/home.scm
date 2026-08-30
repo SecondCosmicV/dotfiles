@@ -3,6 +3,7 @@
   (gnu home services)
   (gnu home services dotfiles)
   (gnu home services fontutils)
+  (gnu home services gnupg)
   (gnu home services mpv)
   (gnu home services shells)
   (gnu packages admin)
@@ -137,6 +138,8 @@
   (services (list
     (service home-dotfiles-service-type (home-dotfiles-configuration
       (directories '("../files"))))
+    (service home-gpg-agent-service-type (home-gpg-agent-configuration
+      (pinentry-program (file-append pinentry "/bin/pinentry"))))
     (service home-mpv-service-type (make-home-mpv-configuration
       #:global (make-mpv-profile-configuration
         #:loop-file 'inf)))

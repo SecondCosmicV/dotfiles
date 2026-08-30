@@ -1,14 +1,16 @@
 #!/usr/bin/env bash
 
 set -xe
-rm -f ~/.config/pcmanfm/default/pcmanfm.conf
 cd config
+guix home build home.scm
+rm -f ~/.config/pcmanfm/default/pcmanfm.conf
 guix home reconfigure home.scm
 cd -
 cd ~/stuff/secrets
 stow -R -v -t ~ .
 cd -
 cd ~/.local/share/applications
+rm -f userapp-Nightly.desktop
 ln -s $(ls -1t userapp-Nightly-*.desktop | head -n 1) userapp-Nightly.desktop
 cd -
 for X in normal webapps; do
