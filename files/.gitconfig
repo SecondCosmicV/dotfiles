@@ -1,3 +1,5 @@
+[include]
+	path = ~/.gitconfig.secret
 [credential]
 	helper = store
 [init]
