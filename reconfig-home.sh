@@ -5,6 +5,15 @@ rm -f ~/.config/pcmanfm/default/pcmanfm.conf
 cd config
 guix home reconfigure home.scm
 cd -
+cd ~/stuff/secrets
+stow -R -v -t ~ .
+cd -
+cd ~/.local/share/applications
+ln -s $(ls -1t userapp-Nightly-*.desktop | head -n 1) userapp-Nightly.desktop
+cd -
+for X in normal webapps; do
+    install -m644 user.$X.js $(realpath ~/.mozilla/firefox/*.$X)/user.js ||:
+done
 dconf write /org/gtk/settings/file-chooser/show-hidden true
 dconf write /org/gnome/gedit/preferences/editor/tabs-size "uint32 2"
 dconf write /org/gnome/gedit/preferences/editor/insert-spaces true
@@ -15,13 +24,6 @@ dconf write /org/gnome/gedit/state/window/side-panel-active-page "'GeditFileBrow
 dconf write /org/gnome/gedit/plugins/filebrowser/filter-mode "@as []"
 dconf write /org/gnome/gedit/plugins/active-plugins "['filebrowser', 'sort', 'docinfo']"
 dconf write /org/virt-manager/virt-manager/xmleditor-enabled true
-cd ~/stuff/secrets
-stow -R -v -t ~ .
-cd -
-for X in normal webapps; do
-    install -m644 user.$X.js $(realpath ~/.mozilla/firefox/*.$X)/user.js ||:
-done
-mkdir -p ~/stuff/channels
 guix time-machine --channels=<(guix describe -f channels)
 guix shell \
     --container \
